@@ -181,21 +181,20 @@
         <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
       </svg>
       장바구니
-    </h1>
-
-    
+    </h1>   
     <div class="cart-grid">
       <div class="cart-items">
-        <div class="cart-item">
+        <div class="cart-item" th:each="item : ${list}">
           <div class="cart-item-content">
-            <img src="https://via.placeholder.com/80" alt="프리미엄 티셔츠" class="cart-item-image">
+            <img src="https://via.placeholder.com/80" th:src="@{'/images/' + ${item.imageUrl}}" alt="이미지없음.." class="cart-item-image">
             <div class="cart-item-details">
-              <h3 class="cart-item-name">프리미엄 티셔츠</h3>
-              <p class="cart-item-id">상품 ID: 1</p>
-              <p class="cart-item-price">29,000원</p>
+              <h3 class="cart-item-name" th:text = "${item.name}"></h3>
+              <p class="cart-item-id" th:text = "${item.cartNo}" hidden="hidden"></p>
+              <p class="cart-item-id" th:text = "${item.product}" hidden="hidden"></p>
+              <p class="cart-item-price" th:text = "${item.price} + 원"></p>
             </div>
             <div class="cart-item-actions">
-              <button class="remove-btn">
+              <button class="remove-btn" type="submit" name="action" value = "removeCart" onclick="return confirm('정말 삭제하시겠습니까?');">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 6h18"></path>
                   <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
@@ -220,7 +219,6 @@
           </div>
         </div>
 	   </div>
-
       <div class="summary">
         <div class="summary-card">
           <h2 class="summary-title">주문 요약</h2>

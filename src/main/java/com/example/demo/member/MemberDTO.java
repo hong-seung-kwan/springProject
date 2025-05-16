@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,13 +13,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartDTO {
-	
-	int cartNo; 
-	
-	String user; // 사용자 아이디
-	
-	int product; // 상품 번호 
-	
-	int product_quantity;
+public class MemberDTO {
+	String userId;
+	String userPw;	
+	String userName;
+	String userAddress;
+	String userPhone;
+	String role;
 }

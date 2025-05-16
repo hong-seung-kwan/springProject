@@ -1,4 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.cart;
+
+import com.example.demo.member.Member;
+import com.example.demo.product.Product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +41,6 @@ public class Cart {
 	Product product; // 상품
 	
 	@Column
-	int product_quantity;
+	int productQuantity;
 	
 }

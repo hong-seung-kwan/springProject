@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.CustomUser;
-import com.example.demo.dto.MemberDTO;
-import com.example.demo.service.MemberService;
+import com.example.demo.member.CustomUser;
+import com.example.demo.member.MemberDTO;
+import com.example.demo.member.MemberService;
 
 @Service
 public class UserServiceImpl implements UserDetailsService {

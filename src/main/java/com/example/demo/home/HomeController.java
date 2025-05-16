@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.home;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.dto.ProductDTO;
-import com.example.demo.entity.Product;
-import com.example.demo.service.ProductService;
+import com.example.demo.product.Product;
+import com.example.demo.product.ProductDTO;
+import com.example.demo.product.ProductService;
 
 @Controller
 public class HomeController {

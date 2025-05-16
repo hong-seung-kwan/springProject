@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.dto.ProductDTO;
+import com.example.demo.product.ProductDTO;
+import com.example.demo.product.ProductService;
 
 @SpringBootTest
 public class ProductServiceTest {
