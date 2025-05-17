@@ -22,6 +22,11 @@ public class CartController {
 		String userId = principal.getName();
 		List<CartDTO> list = service.getListByUserId(userId);
 		
+		int totalPrice = list.stream()
+	            .mapToInt(dto -> dto.getPrice() * dto.getProductQuantity())
+	            .sum();
+		
+		model.addAttribute("totalPrice",totalPrice);
 		model.addAttribute("list",list);
 		
 		return "/cart";
@@ -48,6 +53,34 @@ public class CartController {
 	public String removeCart(@RequestParam("no") int cartNo) {
 		
 		service.remove(cartNo);
-		return "/cart";
+		return "redirect:/cart";
 	}
+	
+	@PostMapping("/cart/increase")
+	public String increase(@RequestParam("no") int cartNo) {
+		service.increaseQuantity(cartNo);
+		return "redirect:/cart";
+	}
+	@PostMapping("/cart/decrease")
+	public String decrease(@RequestParam("no") int cartNo) {
+		service.decreaseQuantity(cartNo);
+		return "redirect:/cart";
+	}
+	
+//	@GetMapping("/cart")
+//	public String totalPrice(Model model, Principal principal) {
+//		String userId = principal.getName();
+//		
+//		List<CartDTO> list = service.getListByUserId(userId);
+//		int sum = 0;
+//		for(CartDTO dto:list) {
+//			sum += dto.getPrice() * dto.getProductQuantity();
+//		}
+//		
+//		model.addAttribute("list",list);
+//		model.addAttribute("sum",sum);
+//		
+//		return "/cart";
+//	}
+
 }

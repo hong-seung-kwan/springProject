@@ -9,5 +9,11 @@ public interface CartService {
 	int register(CartDTO cartDTO);
 
 	boolean remove(int cartNo);
+	
+	void increaseQuantity(int cartNo);
+	
+	void decreaseQuantity(int cartNo);
+	
+	
 
 }

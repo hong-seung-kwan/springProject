@@ -41,14 +41,20 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public int register(CartDTO dto) {
-		
-		Cart cart = dtoToEntity(dto);
 				
-		repository.save(cart);
+		Optional<Cart> cartItem = repository.UserUserIdAndProductProductNo(dto.getUser(), dto.getProduct());
+
 		
-		int cartNo = cart.getCartNo();
-		
-		return cartNo;
+		if(cartItem.isPresent()) {
+			Cart cart = cartItem.get();
+			cart.setProductQuantity(cart.getProductQuantity() + dto.getProductQuantity());
+			repository.save(cart);
+			return cart.getCartNo();
+		} else {
+			Cart cart2 = dtoToEntity(dto);
+			repository.save(cart2);
+			return cart2.getCartNo();
+		}
 	}
 
 	@Override
@@ -97,4 +103,26 @@ public class CartServiceImpl implements CartService {
 								.build();
 			return cart;
 		}
+
+	@Override
+	public void increaseQuantity(int cartNo) {
+		
+		Cart cart = repository.findById(cartNo).orElseThrow();
+		
+		cart.setProductQuantity(cart.getProductQuantity() + 1);
+		repository.save(cart);
+		
+	}
+
+	@Override
+	public void decreaseQuantity(int cartNo) {
+		Cart cart = repository.findById(cartNo).orElseThrow();
+		
+		if(cart.getProductQuantity() > 1) {
+			cart.setProductQuantity(cart.getProductQuantity() -1);
+			repository.save(cart);
+		} else {
+			repository.deleteById(cartNo);
+		}		
+	}
 }
