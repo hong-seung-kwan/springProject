@@ -1,5 +1,6 @@
 package com.example.demo.home;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,54 @@ public class HomeController {
 	public void home(Model model) {
 
 		List<ProductDTO> product = service.getList();
-
-//		ProductDTO product = service.read(productNo);
 		model.addAttribute("product", product);
 
+	}
+	
+	@GetMapping("/bottom")
+	public String categoryBottom(Model model) {
+		
+		List<ProductDTO> list = service.getList();
+		List<ProductDTO> bottomList = new ArrayList<>();
+		
+		for(ProductDTO productDTO : list) {
+			if(productDTO.getCategory().equals("bottom")) {
+				bottomList.add(productDTO);
+				
+			}			
+		}
+		model.addAttribute("bottomlist", bottomList);
+		return "/bottom";		
+	}
+	@GetMapping("/top")
+	public String categoryTop(Model model) {
+		
+		List<ProductDTO> list = service.getList();
+		List<ProductDTO> topList = new ArrayList<>();
+		
+		for(ProductDTO productDTO : list) {
+			if(productDTO.getCategory().equals("top")) {
+				topList.add(productDTO);
+				
+			}			
+		}
+		model.addAttribute("topList", topList);
+		return "/top";		
+	}
+	@GetMapping("/accessories")
+	public String categoryAccessories(Model model) {
+		
+		List<ProductDTO> list = service.getList();
+		List<ProductDTO> accessoriesList = new ArrayList<>();
+		
+		for(ProductDTO productDTO : list) {
+			if(productDTO.getCategory().equals("accessories")) {
+				accessoriesList.add(productDTO);
+				
+			}			
+		}
+		model.addAttribute("bottomList", accessoriesList);
+		return "/accessories";		
 	}
 
 }

@@ -43,7 +43,7 @@ public class CartServiceImpl implements CartService {
 	public int register(CartDTO dto) {
 				
 		Optional<Cart> cartItem = repository.UserUserIdAndProductProductNo(dto.getUser(), dto.getProduct());
-
+		
 		
 		if(cartItem.isPresent()) {
 			Cart cart = cartItem.get();
@@ -55,6 +55,7 @@ public class CartServiceImpl implements CartService {
 			repository.save(cart2);
 			return cart2.getCartNo();
 		}
+		
 	}
 
 	@Override
@@ -107,22 +108,31 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public void increaseQuantity(int cartNo) {
 		
-		Cart cart = repository.findById(cartNo).orElseThrow();
+		Optional<Cart> optional = repository.findById(cartNo);
 		
-		cart.setProductQuantity(cart.getProductQuantity() + 1);
-		repository.save(cart);
+		if(optional.isPresent()) {
+			Cart cart = optional.get();
+			
+			cart.setProductQuantity(cart.getProductQuantity() + 1);
+			repository.save(cart);
+		}
 		
 	}
 
 	@Override
 	public void decreaseQuantity(int cartNo) {
-		Cart cart = repository.findById(cartNo).orElseThrow();
 		
-		if(cart.getProductQuantity() > 1) {
-			cart.setProductQuantity(cart.getProductQuantity() -1);
+		Optional<Cart> optional = repository.findById(cartNo);
+				
+		if(optional.isPresent()) {
+			Cart cart = optional.get();
+					
+			if(cart.getProductQuantity() > 1) {
+			cart.setProductQuantity(cart.getProductQuantity() - 1);
 			repository.save(cart);
-		} else {
-			repository.deleteById(cartNo);
-		}		
+			} else {
+				repository.deleteById(cartNo);
+			}
+		}
 	}
 }

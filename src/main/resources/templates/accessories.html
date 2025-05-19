@@ -30,7 +30,7 @@
                                 <li><a class="dropdown-item" href="/home">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="/bottom">bottom</a></li>
-                                <li><a class="dropdown-item" href="/top">top</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -59,17 +59,15 @@
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompage template</p>
+                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompage template</p>                   
                 </div>
             </div>
         </header>
         <!-- Section-->
         <section class="py-5">
-        <!-- <th:block th:each = "Product : ${product}"> -->
-        	<!-- [[${product}]]   -->   	
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5" th:each = "item : ${product}">
+                    <div class="col mb-5" th:each = "item : ${accessoriesList}">
                         <div class="card h-100">
                             <!-- Product image-->
                             <img class="card-img-top" th:src="@{'/images/' + ${item.imageUrl}}" alt="이미지없음.." />

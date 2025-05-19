@@ -14,6 +14,4 @@ public interface CartService {
 	
 	void decreaseQuantity(int cartNo);
 	
-	
-
 }
