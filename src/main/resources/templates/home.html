@@ -12,7 +12,7 @@
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" >
     </head>
     <body>
         <!-- Navigation-->
@@ -31,6 +31,7 @@
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="/bottom">bottom</a></li>
                                 <li><a class="dropdown-item" href="/top">top</a></li>
+                                <li><a class="dropdown-item" href="/accessories">accessories</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -49,7 +50,7 @@
                     <a class="btn btn-outline-dark ml-2" type="submit" href="/login">Login</a>
                     </div>
                     <div sec:authorize="isAuthenticated()">
-                    <a class="btn btn-outline-dark ml-2" type="submit" href="/login">Logout</a>
+                    <a class="btn btn-outline-dark ml-2" type="submit" href="/logout">Logout</a>
                     </div>                          
                 </div>
             </div>
@@ -72,9 +73,9 @@
                     <div class="col mb-5" th:each = "item : ${product}">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" th:src="@{'/upload/' + ${item.imageUrl}}" alt="이미지없음.." />
+                            <img class="card-img-top h-75" th:src="@{'/upload/' + ${item.imageUrl}}" alt="이미지없음.." />
                             <!-- Product details-->
-                            <div class="card-body p-4">
+                            <div class="card-body p-4" >
                                 <div class="text-center">
                                     <!-- Product name-->
                                     <h5 class="fw-bolder" th:text = "${item.name}"></h5>
@@ -90,8 +91,6 @@
                     </div>
                        </div>
                     </div>                  
-                </div>
-            </div>
         </section>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

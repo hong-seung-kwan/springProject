@@ -30,7 +30,8 @@
                                 <li><a class="dropdown-item" href="/home">All Products</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="/bottom">bottom</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                                <li><a class="dropdown-item" href="/top">top</a></li>
+                                <li><a class="dropdown-item" href="/accessories">accessories</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -70,7 +71,7 @@
                     <div class="col mb-5" th:each = "item : ${accessoriesList}">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" th:src="@{'/images/' + ${item.imageUrl}}" alt="이미지없음.." />
+                            <img class="card-img-top" th:src="@{'/upload/' + ${item.imageUrl}}" alt="이미지없음.." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">

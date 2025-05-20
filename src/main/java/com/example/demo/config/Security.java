@@ -36,12 +36,12 @@ public class Security {
 
 		http.csrf( csrf -> csrf.disable());
 				
-//		http.logout(logout -> logout
-//						.logoutRequestMatcher(new AntPathRequestMatcher("/home"))
-//						.logoutSuccessUrl("/home")
-//						.invalidateHttpSession(true)
-//				
-//				);
+		http.logout(form -> form
+						.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessUrl("/home")
+						.invalidateHttpSession(true)
+				
+				);
 		
 		
 		http.formLogin( form -> {

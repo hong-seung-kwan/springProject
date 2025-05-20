@@ -70,7 +70,7 @@ public class HomeController {
 				
 			}			
 		}
-		model.addAttribute("bottomList", accessoriesList);
+		model.addAttribute("accessoriesList", accessoriesList);
 		return "/accessories";		
 	}
 
