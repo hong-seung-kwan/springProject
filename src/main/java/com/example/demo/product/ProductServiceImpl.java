@@ -7,16 +7,23 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.util.FileUtil;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductRepository repository;
+	@Autowired
+	FileUtil util;
 	
 	@Override
 	public int register(ProductDTO dto) {
 		
 		Product product = dtoToEntity(dto);
+		
+		String filename = util.fileUpload(dto.getUploadFile());
+		product.setImageUrl(filename);
 		repository.save(product);
 		int newNo = product.getProductNo();
 		

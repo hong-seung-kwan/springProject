@@ -1,457 +1,185 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>주문하기</title>
-  <!-- 우편번호 daum api -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script>
-	  function sample4_execDaumPostcode(){
-	      new daum.Postcode({
-	          oncomplete: function(data) {
-	          	// 우편번호
-	              $("#zipCode").val(data.zonecode);
-	              // 도로명 및 지번주소
-	              $("#streetAdr").val(data.roadAddress);
-	          }
-	      }).open();
-	  }
-  </script>
-  <script type="text/javascript">
-	  function addrCheck() {
-	      if($("#zipCode").val() == '' && $("#streetAdr").val() == ''){
-	          alert("우편번호를 클릭하여 주소를 검색해주세요.");
-	          $("#zipCode").focus();
-	      }
-	  }
-  </script>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Noto Sans KR', Arial, sans-serif;
-    }
-    
-    body {
-      background-color: #f5f5f5;
-      color: #333;
-      line-height: 1.6;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-      padding: 20px 0;
-      border-bottom: 1px solid #eee;
-    }
-    
-    h1, h2, h3 {
-      color: #333;
-    }
-    
-    h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-    
-    h2 {
-      font-size: 22px;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
-    
-    h3 {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-    
-    .order-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-    
-    @media (min-width: 768px) {
-      .order-grid {
-        grid-template-columns: 2fr 1fr;
-      }
-    }
-    
-    .order-section {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      padding: 25px;
-      margin-bottom: 20px;
-    }
-    
-    /* 주문 상품 스타일 */
-    .order-items {
-      margin-bottom: 30px;
-    }
-    
-    .order-item {
-      display: flex;
-      padding: 15px 0;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .order-item:last-child {
-      border-bottom: none;
-    }
-    
-    .item-image {
-      width: 100px;
-      height: 100px;
-      border-radius: 5px;
-      object-fit: cover;
-      margin-right: 15px;
-    }
-    
-    .item-details {
-      flex: 1;
-    }
-    
-    .item-name {
-      font-weight: 500;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-    
-    .item-option {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-    
-    .item-price {
-      font-weight: 600;
-      color: #333;
-    }
-    
-    .item-quantity {
-      color: #666;
-      font-size: 14px;
-    }
-    
-    /* 배송 정보 스타일 */
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    
-    input, select, textarea {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 15px;
-      transition: border-color 0.3s;
-    }
-    
-    input:focus, select:focus, textarea:focus {
-      border-color: #4a90e2;
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
-    }
-    
-    textarea {
-      height: 100px;
-      resize: vertical;
-    }
-    
-    .address-group {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    
-    @media (min-width: 768px) {
-      .address-group {
-        grid-template-columns: 1fr 2fr;
-      }
-    }
-    
-    .address-search {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .address-search input {
-      flex: 1;
-    }
-    
-    .address-search button {
-      width: auto;
-      white-space: nowrap;
-    }
-    
-    /* 결제 정보 스타일 */
-    .payment-methods {
-      margin-bottom: 20px;
-    }
-    
-    .payment-method {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .payment-method:hover {
-      border-color: #4a90e2;
-      background-color: #f9f9f9;
-    }
-    
-    .payment-method input {
-      width: auto;
-      margin-right: 10px;
-    }
-    
-    .payment-method label {
-      margin: 0;
-      cursor: pointer;
-    }
-    
-    /* 주문 요약 스타일 */
-    .order-summary {
-      position: sticky;
-      top: 20px;
-    }
-    
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      font-size: 15px;
-    }
-    
-    .summary-label {
-      color: #666;
-    }
-    
-    .summary-value {
-      font-weight: 500;
-    }
-    
-    .summary-total {
-      font-size: 18px;
-      font-weight: 600;
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 2px solid #eee;
-    }
-    
-    .order-button {
-      background-color: #4a90e2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 15px 20px;
-      font-size: 16px;
-      font-weight: 600;
-      width: 100%;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      margin-top: 20px;
-    }
-    
-    .order-button:hover {
-      background-color: #3a7bc8;
-    }
-    
-    .agreement {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
-    }
-    
-    .agreement label {
-      display: flex;
-      align-items: center;
-      font-weight: normal;
-      cursor: pointer;
-    }
-    
-    .agreement input {
-      width: auto;
-      margin-right: 10px;
-    }
-    
-    .agreement a {
-      color: #4a90e2;
-      text-decoration: none;
-    }
-    
-    .agreement a:hover {
-      text-decoration: underline;
-    }
-    
-    /* 모바일 반응형 */
-    @media (max-width: 768px) {
-      .order-section {
-        padding: 15px;
-      }
-      
-      .item-image {
-        width: 80px;
-        height: 80px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주문하기</title>
+<link href="css/order.css" rel="stylesheet"/>
+<!-- 우편번호 daum api -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	function sample4_execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete : function(data) {
+				// 우편번호
+				$("#zipCode").val(data.zonecode);
+				// 도로명 및 지번주소
+				$("#streetAdr").val(data.roadAddress);
+			}
+		}).open();
+	}
+</script>
+<script type="text/javascript">
+	function addrCheck() {
+		if ($("#zipCode").val() == '' && $("#streetAdr").val() == '') {
+			alert("우편번호를 클릭하여 주소를 검색해주세요.");
+			$("#zipCode").focus();
+		}
+	}
+</script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>주문하기</h1>
-    </header>
-    
-    <div class="order-grid">
-      <div class="order-main">
-        <!-- 주문 상품 섹션 -->
-        <section class="order-section" >         
-          <h2>주문 상품 </h2>         
-          <div class="order-items" th:each="item: ${list}">
-            <div class="order-item">
-              <img th:src="@{'/images/' +${item.imageUrl}}"  alt="상품 이미지" class="item-image">
-              <div class="item-details">
-                <h3 class="item-name" th:text="${item.name}"></h3>
-                <!-- <p class="item-option">옵션: 화이트 / M 사이즈</p> -->
-                <p class="item-price" th:text="${item.price}"></p>
-                <p class="item-quantity" >수량: [[${item.productQuantity}]]개</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <!-- 배송 정보 섹션 -->
-        <form action="/order/add" method = "post">
-        <section class="order-section">
-          <h2>배송 정보</h2>
-          <div class="form-group">
-            <label for="receiver">받는 사람</label>
-            <input type="text" id="receiver" name=orderName placeholder="받는 사람 이름">
-          </div>
-          
-          <div class="form-group">
-            <label for="phone">연락처</label>
-            <input type="tel" id="phone" placeholder="연락 가능한 전화번호">
-          </div>
-          
-          <div class="form-group">
-            <label>주소</label>
-            <div class="address-search">
-              <input type="text" id="zipCode" name="zipCode" placeholder="우편번호">
-              <button type="button" class="order-button" style="padding: 12px 15px;" onclick="sample4_execDaumPostcode()">주소 찾기</button>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <input type="text" id="streetAdr" name="streetAdr" placeholder="도로명 주소" readonly>
-          </div>
-          
-          <div class="form-group">
-            <input type="text" id="address" name="address" placeholder="상세 주소" onclick="addrCheck()">
-          </div>
-          
-          <div class="form-group">
-            <label for="request">배송 요청사항</label>
-            <select id="request" name="orderReq">
-              <option value="">배송 시 요청사항을 선택해주세요</option>
-              <option value="door">문 앞에 놓아주세요</option>
-              <option value="security">경비실에 맡겨주세요</option>
-              <option value="call">배송 전 연락 바랍니다</option>
-              <option value="custom">직접 입력</option>
-            </select>
-          </div>
-          
-          <div class="form-group" id="customRequestGroup" style="display: none;">
-            <textarea id="customRequest" name="customRequest" placeholder="배송 요청사항을 입력해주세요"></textarea>
-          </div>
-        </section>
-        
-        <!-- 결제 정보 섹션 -->
-        <section class="order-section">
-          <h2>결제 방법</h2>
-          <div class="payment-methods">
-            <div class="payment-method">
-              <input type="radio" id="card" name="payment" value="card" checked>
-              <label for="card">신용카드</label>
-            </div>
-            
-            <div class="payment-method">
-              <input type="radio" id="bank" name="payment" value="bank">
-              <label for="bank">무통장입금</label>
-            </div>
-            
-            <div class="payment-method">
-              <input type="radio" id="phone" name="payment" value="phone">
-              <label for="phone">휴대폰 결제</label>
-            </div>
-            
-            <div class="payment-method">
-              <input type="radio" id="kakao" name="payment" value="kakao">
-              <label for="kakao">카카오페이</label>
-            </div>
-          </div>
-        </section>
-      </div>
-      
-      <!-- 주문 요약 섹션 -->
-      <div class="order-side">
-        <section class="order-section order-summary">
-          <h2>주문 요약</h2>
-          <div class="summary-row">
-            <span class="summary-label">상품 금액</span>
-            <span class="summary-value">88,000원</span>
-          </div>
-          
-          <div class="summary-row">
-            <span class="summary-label">배송비</span>
-            <span class="summary-value">3,000원</span>
-          </div>
-          
-          <div class="summary-row">
-            <span class="summary-label">할인 금액</span>
-            <span class="summary-value">-2,000원</span>
-          </div>
-          
-          <div class="summary-row summary-total">
-            <span>총 결제 금액</span>
-            <span>89,000원</span>
-          </div>
-          
-          <div class="agreement">
-            <label>
-              <input type="checkbox" id="agreement" name="agreement" required>
-              주문 내용을 확인하였으며, <a href="#">구매 약관</a> 및 <a href="#">개인정보 처리방침</a>에 동의합니다.
-            </label>
-          </div>
-          
-          <button type="submit" class="order-button">결제하기</button>
-        </section>
-        </form>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+		<header>
+			<h1>주문하기</h1>
+		</header>
+
+		<div class="order-grid">
+			<div class="order-main">
+				<!-- 주문 상품 섹션 -->
+				<section class="order-section">
+					<h2>주문 상품</h2>
+					<div class="order-items" th:each="item: ${list}">
+						<div class="order-item">
+							<img th:src="@{'/upload/' +${item.imageUrl}}" alt="상품 이미지"
+								class="item-image">
+							<div class="item-details">
+								<h3 class="item-name" th:text="${item.name}"></h3>
+								<!-- <p class="item-option">옵션: 화이트 / M 사이즈</p> -->
+								<p class="item-price" th:text="${item.price * item.productQuantity}"></p>
+								<p class="item-quantity">수량: [[${item.productQuantity}]]개</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- 배송 정보 섹션 -->
+				<form action="/order" method="post">
+					<section class="order-section">
+						<h2>배송 정보</h2>
+						<div class="form-group">
+							<label for="receiver">받는 사람</label> <input type="text"
+								id="receiver" name=orderName placeholder="받는 사람 이름">
+						</div>
+
+						<div class="form-group">
+							<label for="phone">연락처</label> <input type="tel" id="phone"
+								placeholder="연락 가능한 전화번호">
+						</div>
+
+						<div class="form-group">
+							<label>주소</label>
+							<div class="address-search">
+								<input type="text" id="zipCode" name="zipCode"
+									placeholder="우편번호">
+								<button type="button" class="order-button"
+									style="padding: 12px 15px;"
+									onclick="sample4_execDaumPostcode()">주소 찾기</button>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<input type="text" id="streetAdr" name="streetAdr"
+								placeholder="도로명 주소" readonly>
+						</div>
+
+						<div class="form-group">
+							<input type="text" id="address" name="address"
+								placeholder="상세 주소" onclick="addrCheck()">
+						</div>
+
+						<div class="form-group">
+							<label for="request">배송 요청사항</label> <select id="request"
+								name="orderReq">
+								<option value="">배송 시 요청사항을 선택해주세요</option>
+								<option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+								<option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
+								<option value="배송 전 연락 바랍니다">배송 전 연락 바랍니다</option>
+								<option value="custom">직접 입력</option>
+							</select>
+						</div>
+
+						<div class="form-group" id="customRequestGroup"
+							style="display: none;">
+							<textarea id="customRequest" name="customRequest"
+								placeholder="배송 요청사항을 입력해주세요"></textarea>
+						</div>
+					</section>
+
+					<!-- 결제 정보 섹션 -->
+					<section class="order-section">
+						<h2>결제 방법</h2>
+						<div class="payment-methods">
+							<div class="payment-method">
+								<input type="radio" id="card" name="payment" value="카드결제"
+									checked> <label for="card">신용카드</label>
+							</div>
+
+							<div class="payment-method">
+								<input type="radio" id="bank" name="payment" value="무통장입금">
+								<label for="bank">무통장입금</label>
+							</div>
+
+							<div class="payment-method">
+								<input type="radio" id="phone" name="payment" value="네이버페이">
+								<label for="phone">네이버페이</label>
+							</div>
+
+							<div class="payment-method">
+								<input type="radio" id="kakao" name="payment" value="카카오페이">
+								<label for="kakao">카카오페이</label>
+							</div>
+						</div>
+					</section>				
+			</div>
+
+			<!-- 주문 요약 섹션 -->
+			<div class="order-side">
+				<section class="order-section order-summary">
+					<h2>주문 요약</h2>
+					<div class="summary-row">
+						<span class="summary-label">상품 금액</span> <span
+							class="summary-value" th:text = "${totalPrice}"></span>
+					</div>
+
+					<div class="summary-row">
+						<span class="summary-label">배송비</span> <span class="summary-value">3,000원</span>
+					</div>
+
+					<div class="summary-row summary-total">
+						<span>총 결제 금액</span> <span th:text = "${totalPrice} + 3000 + '원'"></span>
+					</div>
+
+					<!-- <div class="agreement">
+						<label> <input type="checkbox" id="agreement"
+							name="agreement" required> 주문 내용을 확인하였으며, <a href="#">구매
+								약관</a> 및 <a href="#">개인정보 처리방침</a>에 동의합니다.
+						</label>
+					</div> -->
+					<button type="submit" class="order-button">결제하기</button>					
+				</section>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const requestSelect = document.getElementById('request');
+			const customRequestGroup = document
+					.getElementById('customRequestGroup');
+			const custom = customRequest.value;
+
+			requestSelect.addEventListener('change', function() {
+				if (requestSelect.value === 'custom') {
+					customRequestGroup.style.display = 'block';
+				} else {
+					customRequestGroup.style.display = 'none';
+				}
+			});
+		});
+	</script>
+
 </body>
 </html>

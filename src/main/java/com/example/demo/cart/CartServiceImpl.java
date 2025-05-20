@@ -135,4 +135,11 @@ public class CartServiceImpl implements CartService {
 			}
 		}
 	}
+
+	@Override
+	public void removeAll() {
+		
+		repository.deleteAll();
+		
+	}
 }

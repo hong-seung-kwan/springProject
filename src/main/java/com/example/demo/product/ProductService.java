@@ -27,14 +27,13 @@ public interface ProductService {
 		
 		return dto;
 	}
-default Product dtoToEntity(ProductDTO dto) {
+	default Product dtoToEntity(ProductDTO dto) {
 		
 		Product product = Product.builder()
 										.productNo(dto.getProductNo())
 										.name(dto.getName())
 										.price(dto.getPrice())
 										.content(dto.getContent())
-										.imageUrl(dto.getImageUrl())
 										.category(dto.getCategory())
 										.build();
 		

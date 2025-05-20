@@ -28,16 +28,22 @@ public class OrderController {
 		
 		String userId = principal.getName();
 		List<CartDTO> list = cartService.getListByUserId(userId);
+		
+		int totalPrice = list.stream()
+				.mapToInt(dto -> dto.getPrice() * dto.getProductQuantity())
+				.sum();
 	
 		model.addAttribute("list",list);
+		model.addAttribute("totalPrice",totalPrice);
 				
 		return "/order";
 	}
-	@PostMapping("/order/add")
+	@PostMapping("/order")
 	public String orderItem(OrderDTO dto, Principal principal) {
-		String id = principal.getName(); // 인증객체에서 사용자 아이디 꺼내기
+		String id = principal.getName();
 		dto.setUser(id);	
 		service.register(dto);
+		cartService.removeAll();
 		
 		return "/order";
 	}

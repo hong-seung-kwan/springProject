@@ -10,6 +10,8 @@ public interface CartService {
 
 	boolean remove(int cartNo);
 	
+	void removeAll();
+	
 	void increaseQuantity(int cartNo);
 	
 	void decreaseQuantity(int cartNo);

@@ -1,0 +1,278 @@
+@charset "UTF-8";
+* {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h1, h2, h3 {
+      color: #333;
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .order-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    
+    @media (min-width: 768px) {
+      .order-grid {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+    
+    .order-section {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    
+    /* 주문 상품 스타일 */
+    .order-items {
+      margin-bottom: 30px;
+    }
+    
+    .order-item {
+      display: flex;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .order-item:last-child {
+      border-bottom: none;
+    }
+    
+    .item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 5px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+    
+    .item-details {
+      flex: 1;
+    }
+    
+    .item-name {
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    
+    .item-option {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    
+    .item-price {
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .item-quantity {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    /* 배송 정보 스타일 */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: #4a90e2;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+    }
+    
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+    
+    .address-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    
+    @media (min-width: 768px) {
+      .address-group {
+        grid-template-columns: 1fr 2fr;
+      }
+    }
+    
+    .address-search {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .address-search input {
+      flex: 1;
+    }
+    
+    .address-search button {
+      width: auto;
+      white-space: nowrap;
+    }
+    
+    /* 결제 정보 스타일 */
+    .payment-methods {
+      margin-bottom: 20px;
+    }
+    
+    .payment-method {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .payment-method:hover {
+      border-color: #4a90e2;
+      background-color: #f9f9f9;
+    }
+    
+    .payment-method input {
+      width: auto;
+      margin-right: 10px;
+    }
+    
+    .payment-method label {
+      margin: 0;
+      cursor: pointer;
+    }
+    
+    /* 주문 요약 스타일 */
+    .order-summary {
+      position: sticky;
+      top: 20px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+    
+    .summary-label {
+      color: #666;
+    }
+    
+    .summary-value {
+      font-weight: 500;
+    }
+    
+    .summary-total {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px solid #eee;
+    }
+    
+    .order-button {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+    
+    .order-button:hover {
+      background-color: #3a7bc8;
+    }
+    
+    .agreement {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .agreement label {
+      display: flex;
+      align-items: center;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    
+    .agreement input {
+      width: auto;
+      margin-right: 10px;
+    }
+    
+    .agreement a {
+      color: #4a90e2;
+      text-decoration: none;
+    }
+    
+    .agreement a:hover {
+      text-decoration: underline;
+    }

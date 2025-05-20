@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -27,13 +28,20 @@ public class Security {
 			.requestMatchers("/productModify").permitAll()
 			.requestMatchers("/login").permitAll()
 			.requestMatchers("/cart").permitAll()
-			.requestMatchers("/productInfo").permitAll();
+			.requestMatchers("/productInfo").permitAll()
+			.requestMatchers("/upload").permitAll()
+			.requestMatchers(new AntPathRequestMatcher("/**")).permitAll();
 		
 		
 
 		http.csrf( csrf -> csrf.disable());
 				
-		http.logout();
+//		http.logout(logout -> logout
+//						.logoutRequestMatcher(new AntPathRequestMatcher("/home"))
+//						.logoutSuccessUrl("/home")
+//						.invalidateHttpSession(true)
+//				
+//				);
 		
 		
 		http.formLogin( form -> {
