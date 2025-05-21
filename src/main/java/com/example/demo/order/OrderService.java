@@ -1,10 +1,14 @@
 package com.example.demo.order;
 
+import java.util.List;
+
 import com.example.demo.member.Member;
 
 public interface OrderService {
 	
 	int register(OrderDTO dto);
+	
+	List<OrderDTO> getOrderByUserId(String userId);
 	
 	
 	default OrderDTO entityToDto(Order order) {

@@ -33,6 +33,6 @@ public class OrderDTO {
 	String orderReq;
 	String payment;
 	
-	List<OrderProductDTO> OrderProductList; 
+	List<OrderProductDTO> orderProductDTO;
 	
 }

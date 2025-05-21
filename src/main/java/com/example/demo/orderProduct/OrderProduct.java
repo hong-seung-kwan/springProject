@@ -16,6 +16,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,22 +41,17 @@ public class OrderProduct {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int orderProductNo;
 	
-	@Column
-	LocalDateTime localdate;
+	@ManyToOne
+	@JoinColumn(name="orderId")
+	Order order;
 	
-	@Column
-	String name;
+	@ManyToOne
+	@JoinColumn(name = "productId")
+	Product product;
 	
 	@Column
 	int productQuantity;
 	
 	@Column
 	int productPrice;
-	
-	@Column
-	int orderPrice;
-	
-	@ManyToOne
-	Member user;
-		
 }

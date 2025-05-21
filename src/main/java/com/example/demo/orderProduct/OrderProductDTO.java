@@ -16,14 +16,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 public class OrderProductDTO {
-
+	
 	int orderProductNo;
-	String name;
+	int productId;
+	String productName;
 	int productQuantity;
 	int productPrice;
-	int orderPrice;
+	String imageUrl;
 	LocalDateTime localDate;
-	 
-	
-	
+	int orderId;
+	 	
 }
