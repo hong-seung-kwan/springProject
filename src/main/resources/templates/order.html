@@ -48,7 +48,7 @@
 							<div class="item-details">
 								<h3 class="item-name" th:text="${item.name}"></h3>
 								<!-- <p class="item-option">옵션: 화이트 / M 사이즈</p> -->
-								<p class="item-price" th:text="${item.price * item.productQuantity}"></p>
+								<p class="item-price" th:text="${item.price * item.productQuantity + '원'}"></p>
 								<p class="item-quantity">수량: [[${item.productQuantity}]]개</p>
 							</div>
 						</div>
@@ -140,16 +140,18 @@
 				<section class="order-section order-summary">
 					<h2>주문 요약</h2>
 					<div class="summary-row">
-						<span class="summary-label">상품 금액</span> <span
-							class="summary-value" th:text = "${totalPrice}"></span>
+						<span class="summary-label">상품 금액</span> 
+						<span class="summary-value" th:text = "${totalPrice} + '원'"></span>
 					</div>
 
 					<div class="summary-row">
-						<span class="summary-label">배송비</span> <span class="summary-value">3,000원</span>
+						<span class="summary-label">배송비</span> <span class="summary-value" th:text = "${delivery} + '원'"></span>
 					</div>
 
 					<div class="summary-row summary-total">
-						<span>총 결제 금액</span> <span th:text = "${totalPrice} + 3000 + '원'"></span>
+						<input type="hidden" name="totalPrice" th:value="${totalPrice}">
+						<input type="hidden" name="delivery" th:value="${delivery}">
+						<span>총 결제 금액</span> <span th:text = "${totalPrice + delivery} + '원'"></span>
 					</div>
 
 					<!-- <div class="agreement">

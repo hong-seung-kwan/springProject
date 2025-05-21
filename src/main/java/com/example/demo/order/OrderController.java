@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.cart.CartDTO;
 import com.example.demo.cart.CartRepository;
@@ -20,8 +21,6 @@ public class OrderController {
 	OrderService service;
 	@Autowired
 	CartService cartService;
-	@Autowired
-	CartRepository cartRepository;
 	
 	@GetMapping("/order")
 	public String order(Model model, Principal principal) {
@@ -32,20 +31,30 @@ public class OrderController {
 		int totalPrice = list.stream()
 				.mapToInt(dto -> dto.getPrice() * dto.getProductQuantity())
 				.sum();
-	
+		
+		int delivery = 0;
+		if(totalPrice < 30000) {
+			delivery = 3000;
+		} else {
+			delivery = 0;
+		}
+		
+		model.addAttribute("delivery",delivery);
 		model.addAttribute("list",list);
 		model.addAttribute("totalPrice",totalPrice);
 				
 		return "/order";
 	}
 	@PostMapping("/order")
-	public String orderItem(OrderDTO dto, Principal principal) {
+	public String orderItem(OrderDTO dto, Principal principal,@RequestParam("totalPrice") int totalPrice, @RequestParam("delivery") int delivery) {
 		String id = principal.getName();
-		dto.setUser(id);	
+		int orderprice = totalPrice + delivery;
+		dto.setUser(id);
+		dto.setOrderPrice(orderprice);
 		service.register(dto);
 		cartService.removeAll();
 		
-		return "/order";
+		return "redirect:/home";
 	}
 	
 	

@@ -25,7 +25,14 @@ public class CartController {
 		int totalPrice = list.stream()
 	            .mapToInt(dto -> dto.getPrice() * dto.getProductQuantity())
 	            .sum();
+		int delivery = 0;
+		if(totalPrice < 30000) {
+			delivery = 3000;
+		} else {
+			delivery = 0;
+		}
 		
+		model.addAttribute("delivery",delivery);
 		model.addAttribute("totalPrice",totalPrice);
 		model.addAttribute("list",list);
 		

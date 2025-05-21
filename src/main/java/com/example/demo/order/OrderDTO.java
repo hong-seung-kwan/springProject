@@ -2,6 +2,9 @@ package com.example.demo.order;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.example.demo.orderProduct.OrderProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +32,7 @@ public class OrderDTO {
 	String orderName;
 	String orderReq;
 	String payment;
+	
+	List<OrderProductDTO> OrderProductList; 
 	
 }

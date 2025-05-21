@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.util.FileUtil;
 
@@ -47,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void modify(ProductDTO dto) {
 		
+		MultipartFile file = dto.getUploadFile();
 		Optional<Product> optional = repository.findById(dto.getProductNo());
 		
 		if(optional.isPresent()) {
@@ -55,7 +57,12 @@ public class ProductServiceImpl implements ProductService {
 			product.setName(dto.getName());
 			product.setPrice(dto.getPrice());
 			product.setContent(dto.getContent());
-			product.setImageUrl(dto.getImageUrl());
+
+	        if (file != null && !file.isEmpty()) {
+	            String filename = util.fileUpload(file);
+	            product.setImageUrl(filename);
+	        }
+			
 			
 			repository.save(product);
 		}
@@ -86,5 +93,6 @@ public class ProductServiceImpl implements ProductService {
 		
 		return dto;
 	}
+
 
 }

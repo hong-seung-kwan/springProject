@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이페이지 - 쇼핑몰</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      margin-bottom: 30px;
+      padding: 20px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h1, h2, h3 {
+      color: #333;
+    }
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .mypage-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    
+    @media (min-width: 768px) {
+      .mypage-grid {
+        grid-template-columns: 250px 1fr;
+      }
+    }
+    
+    .mypage-section {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    
+    /* 사이드바 스타일 */
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    
+    .user-profile {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .user-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 15px;
+      border: 3px solid #f0f0f0;
+    }
+    
+    .user-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .user-email {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .user-level {
+      display: inline-block;
+      background-color: #4a90e2;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .nav-menu {
+      list-style: none;
+    }
+    
+    .nav-item {
+      margin-bottom: 5px;
+    }
+    
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      border-radius: 5px;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+      background-color: #f0f7ff;
+      color: #4a90e2;
+    }
+    
+    .nav-link.active {
+      font-weight: 600;
+    }
+    
+    .nav-icon {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    /* 주문 내역 스타일 */
+    .order-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .order-stat {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 24px;
+      font-weight: 600;
+      color: #4a90e2;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .order-list {
+      margin-top: 20px;
+    }
+    
+    .order-item {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .order-date {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .order-id {
+      font-weight: 600;
+    }
+    
+    .order-status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .status-pending {
+      background-color: #fff8e1;
+      color: #f57c00;
+    }
+    
+    .status-shipping {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+    
+    .status-delivered {
+      background-color: #e8f5e9;
+      color: #388e3c;
+    }
+    
+    .status-canceled {
+      background-color: #ffebee;
+      color: #d32f2f;
+    }
+    
+    .order-product {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    
+    .product-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 5px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+    
+    .product-details {
+      flex: 1;
+    }
+    
+    .product-name {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .product-option {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .product-price {
+      font-weight: 600;
+    }
+    
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+    
+    .order-total {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .order-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-outline {
+      border: 1px solid #ddd;
+      color: #333;
+      background-color: white;
+    }
+    
+    .btn-outline:hover {
+      border-color: #4a90e2;
+      color: #4a90e2;
+    }
+    
+    .btn-primary {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: #3a7bc8;
+    }
+    
+    /* 위시리스트 스타일 */
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    
+    .wishlist-item {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .wishlist-item:hover {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    .wishlist-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    
+    .wishlist-details {
+      padding: 15px;
+    }
+    
+    .wishlist-name {
+      font-weight: 500;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+    
+    .wishlist-price {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .wishlist-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    /* 개인정보 스타일 */
+    .info-group {
+      margin-bottom: 20px;
+    }
+    
+    .info-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .info-value {
+      font-weight: 500;
+      font-size: 16px;
+    }
+    
+    .info-edit {
+      color: #4a90e2;
+      font-size: 14px;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+    
+    .info-edit:hover {
+      text-decoration: underline;
+    }
+    
+    /* 배송지 관리 스타일 */
+    .address-item {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .address-default {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #4a90e2;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .address-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .address-details {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .address-phone {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .address-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    /* 탭 스타일 */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      border-bottom-color: #4a90e2;
+      color: #4a90e2;
+      font-weight: 500;
+    }
+    
+    /* 페이지네이션 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    
+    .page-item {
+      margin: 0 5px;
+    }
+    
+    .page-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .page-link:hover, .page-link.active {
+      background-color: #4a90e2;
+      color: white;
+      border-color: #4a90e2;
+    }
+    
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+      .mypage-section {
+        padding: 15px;
+      }
+      
+      .order-header {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .order-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .wishlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>마이페이지</h1>
+    </header>
+    
+    <div class="mypage-grid">
+      <!-- 사이드바 -->
+      <aside class="sidebar mypage-section">
+        <div class="user-profile">
+          <img src="https://via.placeholder.com/100" alt="프로필 이미지" class="user-avatar">
+          <h3 class="user-name">홍길동님</h3>
+          <p class="user-email">hong@example.com</p>
+          <span class="user-level">VIP 회원</span>
+        </div>
+        
+        <nav>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="#" class="nav-link active">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                대시보드
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                주문 내역
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                위시리스트
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                개인정보 관리
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                배송지 관리
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                고객센터
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                로그아웃
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      
+      <!-- 메인 콘텐츠 -->
+      <main class="main-content">
+        <!-- 대시보드 섹션 -->
+        <section class="mypage-section">
+          <h2>대시보드</h2>
+          
+          <div class="order-summary">
+            <div class="order-stat">
+              <div class="stat-number">2</div>
+              <div class="stat-label">결제완료</div>
+            </div>
+            <div class="order-stat">
+              <div class="stat-number">1</div>
+              <div class="stat-label">배송중</div>
+            </div>
+            <div class="order-stat">
+              <div class="stat-number">3</div>
+              <div class="stat-label">배송완료</div>
+            </div>
+            <div class="order-stat">
+              <div class="stat-number">0</div>
+              <div class="stat-label">취소/반품</div>
+            </div>
+          </div>
+          
+          <h3>최근 주문 내역</h3>
+          <div class="order-list">
+            <div class="order-item">
+              <div class="order-header">
+                <div>
+                  <span class="order-date">2023-05-15</span>
+                  <div class="order-id">주문번호: 20230515-12345</div>
+                </div>
+                <span class="order-status status-shipping">배송중</span>
+              </div>
+              
+              <div class="order-product">
+                <img src="https://via.placeholder.com/80" alt="상품 이미지" class="product-image">
+                <div class="product-details">
+                  <div class="product-name">프리미엄 티셔츠</div>
+                  <div class="product-option">옵션: 화이트 / M 사이즈</div>
+                  <div class="product-price">29,000원 / 1개</div>
+                </div>
+              </div>
+              
+              <div class="order-footer">
+                <div class="order-total">총 결제금액: 32,000원</div>
+                <div class="order-actions">
+                  <a href="#" class="btn btn-outline">주문 상세</a>
+                  <a href="#" class="btn btn-outline">배송 조회</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="order-item">
+              <div class="order-header">
+                <div>
+                  <span class="order-date">2023-05-10</span>
+                  <div class="order-id">주문번호: 20230510-67890</div>
+                </div>
+                <span class="order-status status-delivered">배송완료</span>
+              </div>
+              
+              <div class="order-product">
+                <img src="https://via.placeholder.com/80" alt="상품 이미지" class="product-image">
+                <div class="product-details">
+                  <div class="product-name">클래식 데님 청바지</div>
+                  <div class="product-option">옵션: 블루 / 32 사이즈</div>
+                  <div class="product-price">59,000원 / 1개</div>
+                </div>
+              </div>
+              
+              <div class="order-footer">
+                <div class="order-total">총 결제금액: 62,000원</div>
+                <div class="order-actions">
+                  <a href="#" class="btn btn-outline">주문 상세</a>
+                  <a href="#" class="btn btn-primary">리뷰 작성</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="pagination">
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <a href="#" class="page-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </a>
+          </div>
+        </section>
+        
+        <!-- 위시리스트 섹션 -->
+        <section class="mypage-section">
+          <h2>위시리스트</h2>
+          
+          <div class="wishlist-grid">
+            <div class="wishlist-item">
+              <img src="https://via.placeholder.com/200" alt="상품 이미지" class="wishlist-image">
+              <div class="wishlist-details">
+                <div class="wishlist-name">프리미엄 가죽 지갑</div>
+                <div class="wishlist-price">89,000원</div>
+                <div class="wishlist-actions">
+                  <a href="#" class="btn btn-outline">장바구니</a>
+                  <a href="#" class="btn btn-primary">구매하기</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="wishlist-item">
+              <img src="https://via.placeholder.com/200" alt="상품 이미지" class="wishlist-image">
+              <div class="wishlist-details">
+                <div class="wishlist-name">캐주얼 스니커즈</div>
+                <div class="wishlist-price">79,000원</div>
+                <div class="wishlist-actions">
+                  <a href="#" class="btn btn-outline">장바구니</a>
+                  <a href="#" class="btn btn-primary">구매하기</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="wishlist-item">
+              <img src="https://via.placeholder.com/200" alt="상품 이미지" class="wishlist-image">
+              <div class="wishlist-details">
+                <div class="wishlist-name">여름용 선글라스</div>
+                <div class="wishlist-price">45,000원</div>
+                <div class="wishlist-actions">
+                  <a href="#" class="btn btn-outline">장바구니</a>
+                  <a href="#" class="btn btn-primary">구매하기</a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="wishlist-item">
+              <img src="https://via.placeholder.com/200" alt="상품 이미지" class="wishlist-image">
+              <div class="wishlist-details">
+                <div class="wishlist-name">가벼운 여름 자켓</div>
+                <div class="wishlist-price">120,000원</div>
+                <div class="wishlist-actions">
+                  <a href="#" class="btn btn-outline">장바구니</a>
+                  <a href="#" class="btn btn-primary">구매하기</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- 개인정보 관리 섹션 -->
+        <section class="mypage-section">
+          <h2>개인정보 관리</h2>
+          
+          <div class="tabs">
+            <div class="tab active">기본 정보</div>
+            <div class="tab">비밀번호 변경</div>
+            <div class="tab">알림 설정</div>
+          </div>
+          
+          <div class="info-group">
+            <span class="info-label">이름</span>
+            <span class="info-value">홍길동 <a href="#" class="info-edit">수정</a></span>
+          </div>
+          
+          <div class="info-group">
+            <span class="info-label">이메일</span>
+            <span class="info-value">hong@example.com <a href="#" class="info-edit">수정</a></span>
+          </div>
+          
+          <div class="info-group">
+            <span class="info-label">휴대폰 번호</span>
+            <span class="info-value">010-1234-5678 <a href="#" class="info-edit">수정</a></span>
+          </div>
+          
+          <div class="info-group">
+            <span class="info-label">생년월일</span>
+            <span class="info-value">1990-01-01 <a href="#" class="info-edit">수정</a></span>
+          </div>
+          
+          <div class="info-group">
+            <span class="info-label">마케팅 수신 동의</span>
+            <span class="info-value">이메일: 동의, SMS: 미동의 <a href="#" class="info-edit">수정</a></span>
+          </div>
+        </section>
+        
+        <!-- 배송지 관리 섹션 -->
+        <section class="mypage-section">
+          <h2>배송지 관리</h2>
+          
+          <div class="address-list">
+            <div class="address-item">
+              <span class="address-default">기본 배송지</span>
+              <h3 class="address-name">집</h3>
+              <p class="address-details">서울특별시 강남구 테헤란로 123, 456동 789호</p>
+              <p class="address-phone">010-1234-5678</p>
+              <div class="address-actions">
+                <a href="#" class="btn btn-outline">수정</a>
+                <a href="#" class="btn btn-outline">삭제</a>
+              </div>
+            </div>
+            
+            <div class="address-item">
+              <h3 class="address-name">회사</h3>
+              <p class="address-details">서울특별시 서초구 서초대로 777, 8층</p>
+              <p class="address-phone">010-1234-5678</p>
+              <div class="address-actions">
+                <a href="#" class="btn btn-outline">수정</a>
+                <a href="#" class="btn btn-outline">삭제</a>
+                <a href="#" class="btn btn-primary">기본 배송지로 설정</a>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 20px;">
+            <a href="#" class="btn btn-primary">새 배송지 추가</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -237,11 +237,11 @@
           </div>
           <div class="summary-row">
             <span class="summary-label">배송비</span>
-            <span class="summary-value">3,000원</span>
+            <span class="summary-value" th:text = "${delivery} + '원'"></span>
           </div>
           <div class="summary-row summary-total">
             <span>총 결제 금액</span>
-            <span th:text="${totalPrice} + 3000 + '원'"></span>
+            <span th:text="${totalPrice + delivery}+ '원'"></span>
           </div>         
           <a href="/order" class="checkout-btn">결제하기</a>
           <a href="/home" class="continue-shopping-btn">쇼핑 계속하기</a>         

@@ -1,19 +1,21 @@
-package com.example.demo.order;
+package com.example.demo.orderProduct;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.example.demo.cart.Cart;
 import com.example.demo.member.Member;
+import com.example.demo.order.Order;
+import com.example.demo.product.Product;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,7 +26,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "ordertbl")
+@Table(name = "orderProduct")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,32 +34,28 @@ import lombok.ToString;
 @ToString
 @Builder
 @EntityListeners(value = { AuditingEntityListener.class })
-public class Order {
-
+public class OrderProduct {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int orderNo;
+	int orderProductNo;
 	
-	@ManyToOne
-	Member user;
-		
-	@CreatedDate
-	LocalDateTime orderDate;
+	@Column
+	LocalDateTime localdate;
+	
+	@Column
+	String name;
+	
+	@Column
+	int productQuantity;
+	
+	@Column
+	int productPrice;
 	
 	@Column
 	int orderPrice;
 	
-	@Column(nullable = false)
-	String zipCode;
-	@Column(nullable = false)
-	String streetAdr;
-	@Column(nullable = false)
-	String address;
-	@Column(nullable = false)
-	String orderName;
-	@Column(nullable = false)
-	String orderReq;	
-	@Column
-	String payment;
-
+	@ManyToOne
+	Member user;
+		
 }

@@ -21,6 +21,5 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 	void deleteByUserId(@Param("userId") String userId);
 	
 	Optional<Cart> UserUserIdAndProductProductNo(String userId, int productNo);
-	
-//	Optional<Cart> findByUserIdAndProductNo(String userId, int productNo);
+
 }
