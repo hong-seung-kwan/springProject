@@ -3,10 +3,11 @@ package com.example.demo.order;
 import java.util.List;
 
 import com.example.demo.member.Member;
+import com.example.demo.orderProduct.OrderProductDTO;
 
 public interface OrderService {
 	
-	int register(OrderDTO dto);
+	void register(OrderDTO dto, OrderProductDTO orderProductDTO);
 	
 	List<OrderDTO> getOrderByUserId(String userId);
 	

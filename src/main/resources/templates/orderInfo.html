@@ -424,14 +424,14 @@
             <div class="product-details">
               <div class="product-name">프리미엄 티셔츠</div>
               <div class="product-option">옵션: 화이트 / M 사이즈</div>
-              <div class="product-price">29,000원</div>
+              <div class="product-price" >29,000원</div>
               <div class="product-quantity">수량: 1개</div>
             </div>
           </div>
         </div>
         
         <div class="order-footer">
-          <div class="order-total">총 결제금액: 32,000원</div>
+          <div class="order-total" th:text = "${order.orderPrice}"></div>
           <div class="order-actions">
             <a href="#" class="btn btn-outline">주문 상세</a>
             <a href="#" class="btn btn-outline">주문 취소</a>

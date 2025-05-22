@@ -7,7 +7,8 @@ import com.example.demo.product.Product;
 
 public interface OrderProductService {
 	
-	int register(OrderProductDTO dto);
+//	int register(OrderProductDTO dto);
+	
 	
 	List<OrderProductDTO> getOrderProductByOrderNo(int orderNo);
 	
@@ -35,12 +36,13 @@ public interface OrderProductService {
 	
 	default OrderProductDTO entityToDto(OrderProduct entity) {
 		
+		// 상품가격 상품수량 상품가격 총가격 이미지url 
 		OrderProductDTO dto = OrderProductDTO.builder()
 											.orderProductNo(entity.getOrderProductNo())
-											.orderId(entity.getOrder().getOrderNo())
-											.orderProductNo(entity.getProduct().getProductNo())
+											.orderId(entity.getOrder().getOrderNo())											
 											.productQuantity(entity.getProductQuantity())
-											.productPrice(entity.getProductPrice())
+											.productPrice(entity.getProduct().getPrice())
+											.imageUrl(entity.getProduct().getImageUrl())											
 											.build();
 		
 		return dto;

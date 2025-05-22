@@ -3,21 +3,24 @@ package com.example.demo.order;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.cart.CartRepository;
 import com.example.demo.orderProduct.OrderProduct;
 import com.example.demo.orderProduct.OrderProductDTO;
+import com.example.demo.orderProduct.OrderProductRepository;
 import com.example.demo.orderProduct.OrderProductService;
+import com.example.demo.product.Product;
+import com.example.demo.product.ProductDTO;
 import com.example.demo.product.ProductRepository;
-
-import lombok.Getter;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
+	
 	@Autowired
 	OrderRepository repository;
 	@Autowired
@@ -25,25 +28,30 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	ProductRepository productRepository;
 	@Autowired
+	OrderProductRepository orderProductRepository;
+	@Autowired
 	OrderProductService orderProductService;
 	
 	
 	@Override
-	public int register(OrderDTO dto) {
+	public void register(OrderDTO dto, OrderProductDTO orderProductDTO) {
 		
 		
 		Order order = dtoToEntity(dto);
 		repository.save(order);
-		int orderNo = order.getOrderNo();
 		
-//		List<OrderProductDTO> productDTO = dto.getOrderProductDTO();
-//		for(OrderProductDTO orderProductDTO : productDTO) {
-//			OrderProduct orderProduct = OrderProduct.builder()
-//											.order(order)
-//											.product(productRepository.findById(productDTO.get()))
-//		}
+		Product product = productRepository.findById(orderProductDTO.getProductId()).orElseThrow();
+			    
+//		orderProductDTO.setOrderProductNo(0);
 		
-		return orderNo;
+		OrderProduct orderProduct = orderProductService.dtoToEntity(orderProductDTO);
+		orderProduct.setOrder(order);
+		orderProduct.setProduct(product);
+
+		orderProductRepository.save(orderProduct);
+
+		
+
 	}
 
 
