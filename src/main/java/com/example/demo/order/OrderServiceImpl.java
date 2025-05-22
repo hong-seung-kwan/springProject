@@ -34,28 +34,6 @@ public class OrderServiceImpl implements OrderService {
 	
 	
 	@Override
-	public void register(OrderDTO dto, OrderProductDTO orderProductDTO) {
-		
-		
-		Order order = dtoToEntity(dto);
-		repository.save(order);
-		
-		Product product = productRepository.findById(orderProductDTO.getProductId()).orElseThrow();
-			    
-//		orderProductDTO.setOrderProductNo(0);
-		
-		OrderProduct orderProduct = orderProductService.dtoToEntity(orderProductDTO);
-		orderProduct.setOrder(order);
-		orderProduct.setProduct(product);
-
-		orderProductRepository.save(orderProduct);
-
-		
-
-	}
-
-
-	@Override
 	public List<OrderDTO> getOrderByUserId(String userId) {
 		
 		List<Order> list = repository.findByUserUserId(userId);
@@ -71,6 +49,28 @@ public class OrderServiceImpl implements OrderService {
 		}
 				
 		return dtolist;
+	}
+
+
+	@Override
+	@Transactional
+	public void register(OrderDTO dto, List<OrderProductDTO> productDTOList) {
+		
+		Order order = dtoToEntity(dto);
+		repository.save(order);
+		
+		for(OrderProductDTO orderProductDTO : dto.getOrderProductDTO()) {
+			
+			Product product = productRepository.findById(orderProductDTO.getProductId())
+												.orElseThrow();
+			OrderProduct orderProduct = orderProductService.dtoToEntity(orderProductDTO);
+			
+			orderProduct.setOrder(order);
+			orderProduct.setProduct(product);
+			
+			orderProductRepository.save(orderProduct);
+ 		}
+		
 	}
 
 }

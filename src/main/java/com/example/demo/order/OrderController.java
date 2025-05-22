@@ -1,10 +1,12 @@
 package com.example.demo.order;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +22,17 @@ import com.example.demo.orderProduct.OrderProductService;
 @Controller
 public class OrderController {
 
+    private final PasswordEncoder PasswordEncoder;
+
 	@Autowired
 	OrderService service;
 	@Autowired
 	CartService cartService;
+
+
+    OrderController(PasswordEncoder PasswordEncoder) {
+        this.PasswordEncoder = PasswordEncoder;
+    }
 
 	
 	@GetMapping("/order")
@@ -51,12 +60,21 @@ public class OrderController {
 	}
 	
 	@PostMapping({"/order","/orderProduct"})
-	public String orderItem(OrderDTO dto, OrderProductDTO orderProductDTO, Principal principal,@RequestParam("totalPrice") int totalPrice, @RequestParam("delivery") int delivery) {
+	public String orderItem(OrderDTO dto, Principal principal,@RequestParam("totalPrice") int totalPrice, @RequestParam("delivery") int delivery) {
 		String id = principal.getName();
 		int orderprice = totalPrice + delivery;
 		dto.setUser(id);
 		dto.setOrderPrice(orderprice);
-		service.register(dto, orderProductDTO);
+		
+//		List<OrderProductDTO> productDTOList = new ArrayList<>();
+//		for(int i = 0; i < productIds.size(); i++) {
+//			OrderProductDTO orderProductDTO = new OrderProductDTO();
+//			orderProductDTO.setProductId(productIds.get(i));
+//			orderProductDTO.setProductQuantity(productQuantities.get(i));
+//			orderProductDTO.setProductPrice(productPrices.get(i));
+//			productDTOList.add(orderProductDTO);
+//		}
+		service.register(dto, dto.getOrderProductDTO());
 		
 //		cartService.removeAll();
 

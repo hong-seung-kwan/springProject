@@ -23,8 +23,7 @@ public interface OrderProductService {
 				  					.productNo(dto.getProductId())
 				  					.build();
 		
-		OrderProduct entity = OrderProduct.builder()
-											.orderProductNo(dto.getProductId())
+		OrderProduct entity = OrderProduct.builder()											
 											.order(order)
 											.product(product)
 											.productQuantity(dto.getProductQuantity())
@@ -41,7 +40,7 @@ public interface OrderProductService {
 											.orderProductNo(entity.getOrderProductNo())
 											.orderId(entity.getOrder().getOrderNo())											
 											.productQuantity(entity.getProductQuantity())
-											.productPrice(entity.getProduct().getPrice())
+											.productPrice(entity.getProductPrice())
 											.imageUrl(entity.getProduct().getImageUrl())											
 											.build();
 		

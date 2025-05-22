@@ -7,7 +7,7 @@ import com.example.demo.orderProduct.OrderProductDTO;
 
 public interface OrderService {
 	
-	void register(OrderDTO dto, OrderProductDTO orderProductDTO);
+	void register(OrderDTO dto, List<OrderProductDTO> productDTOList);
 	
 	List<OrderDTO> getOrderByUserId(String userId);
 	

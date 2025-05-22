@@ -23,7 +23,7 @@ public class OrderProductDTO {
 	int productQuantity;
 	int productPrice;
 	String imageUrl;
-	LocalDateTime localDate;
+	LocalDateTime orderDate;
 	int orderId;
 	 	
 }
