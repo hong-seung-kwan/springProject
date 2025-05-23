@@ -63,7 +63,7 @@
         <div class="order-content" >
         
           <div class="order-product" th:each="orderProduct : ${order.orderProductDTO}">
-            <img src="https://via.placeholder.com/80" alt="상품 이미지" class="product-image">
+            <img th:src="@{${orderProduct.imageUrl}}" alt="상품 이미지" class="product-image">
             <div class="product-details">
             	<input type="hidden"> 
               <div class="product-name" th:text= " ${orderProduct.productName}">프리미엄 티셔츠</div>
