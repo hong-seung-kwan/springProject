@@ -60,12 +60,13 @@
           <span class="order-status status-pending">결제완료</span>
         </div>
         
-        <div class="order-content" th:each = "orderProduct:${orderProductList}">
-          <div class="order-product">
+        <div class="order-content" >
+        
+          <div class="order-product" th:each="orderProduct : ${order.orderProductDTO}">
             <img src="https://via.placeholder.com/80" alt="상품 이미지" class="product-image">
             <div class="product-details">
-            	<input type="hidden" th:value = "${orderProduct.product.productName}"> 
-              <div class="product-name">프리미엄 티셔츠</div>
+            	<input type="hidden"> 
+              <div class="product-name" th:text= " ${orderProduct.productName}">프리미엄 티셔츠</div>
               <!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
               <div class="product-price" >29,000원</div>
               <div class="product-quantity">수량: 1개</div>
