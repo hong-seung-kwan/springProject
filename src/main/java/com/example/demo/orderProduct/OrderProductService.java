@@ -9,6 +9,8 @@ public interface OrderProductService {
 		
 	List<OrderProductDTO> getOrderProductByOrderNo(int orderNo);
 	
+	boolean remove(OrderProduct orderProduct ,int orderNo); 
+	
 	default OrderProduct dtoToEntity(OrderProductDTO dto) {
 		
 		
@@ -38,7 +40,8 @@ public interface OrderProductService {
 											.orderId(entity.getOrder().getOrderNo())											
 											.productQuantity(entity.getProductQuantity())
 											.productPrice(entity.getProductPrice())
-											.imageUrl(entity.getProduct().getImageUrl())											
+											.imageUrl(entity.getProduct().getImageUrl())	
+											.productName(entity.getProduct().getName())
 											.build();
 		
 		return dto;

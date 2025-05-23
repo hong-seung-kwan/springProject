@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.order.OrderDTO;
 import com.example.demo.order.OrderService;
@@ -41,6 +42,16 @@ public class OrderProductController {
 		
 		
 		return "/orderInfo";
+	}
+	
+	@PostMapping("/orderInfo")
+	public String remove(OrderProduct orderProduct, @RequestParam("orderNo") int orderNo) {
+		
+		service.remove(orderProduct,orderNo);
+		
+		
+		return "redirect:/orderInfo";
+		
 	}
 		
 }

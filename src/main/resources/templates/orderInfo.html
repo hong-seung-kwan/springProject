@@ -1,113 +1,123 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>주문내역 - 쇼핑몰</title>
-  <link href="css/orderInfo.css" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주문내역 - 쇼핑몰</title>
+<link href="css/orderInfo.css" rel="stylesheet" />
 
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>주문내역</h1>
-    </header>
-    
-    <!-- 주문 상태 필터 -->
-    <div class="order-status-filter">
-      <div class="filter-item active">
-        전체 <span class="filter-count">6</span>
-      </div>
-      <div class="filter-item">
-        결제완료 <span class="filter-count">2</span>
-      </div>
-      <div class="filter-item">
-        배송중 <span class="filter-count">1</span>
-      </div>
-      <div class="filter-item">
-        배송완료 <span class="filter-count">3</span>
-      </div>
-      <div class="filter-item">
-        취소/반품 <span class="filter-count">0</span>
-      </div>
-    </div>
-    
-    <!-- 기간 선택 -->
-    <div class="order-period">
-      <button class="period-btn active">1개월</button>
-      <button class="period-btn">3개월</button>
-      <button class="period-btn">6개월</button>
-      <button class="period-btn">1년</button>
-      
-      <div class="period-custom">
-        <input type="date" class="period-input" value="2023-05-01">
-        <span class="period-separator">~</span>
-        <input type="date" class="period-input" value="2023-05-31">
-        <button class="search-btn">조회</button>
-      </div>
-    </div>
-    
-    <!-- 주문 목록 -->
-    <div class="order-list">
-      <!-- 주문 아이템 1 -->
-      <div class="order-item" th:each="order : ${orders}">
-        <div class="order-header">
-          <div>
-          <input type="hidden" th:value = "${order.orderNo}">          
-            <div class="order-date">2023-05-20</div>
-            <div class="order-id" th:text="'주문번호: ' + ${order.orderNo}"></div>
-          </div>
-          <span class="order-status status-pending">결제완료</span>
-        </div>
-        
-        <div class="order-content" >
-        
-          <div class="order-product" th:each="orderProduct : ${order.orderProductDTO}">
-            <img th:src="@{${orderProduct.imageUrl}}" alt="상품 이미지" class="product-image">
-            <div class="product-details">
-            	<input type="hidden"> 
-              <div class="product-name" th:text= " ${orderProduct.productName}">프리미엄 티셔츠</div>
-              <!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
-              <div class="product-price" >29,000원</div>
-              <div class="product-quantity">수량: 1개</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="order-footer">
-          <div class="order-total" th:text = "${order.orderPrice} + '원'"></div>
-          <div class="order-actions">
-            <a href="#" class="btn btn-outline">주문 상세</a>
-            <a href="#" class="btn btn-outline">주문 취소</a>
-          </div>
-        </div>
-      </div>                  
-    </div>
-    
-    <!-- 페이지네이션 -->
-    <div class="pagination">
-      <a href="#" class="page-link active">1</a>
-      <a href="#" class="page-link">2</a>
-      <a href="#" class="page-link">3</a>
-      <a href="#" class="page-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+	<div class="container">
+		<header>
+			<h1>주문내역</h1>
+		</header>
+
+		<!-- 주문 상태 필터 -->
+		<div class="order-status-filter">
+			<div class="filter-item active">
+				전체 <span class="filter-count">6</span>
+			</div>
+			<div class="filter-item">
+				결제완료 <span class="filter-count">2</span>
+			</div>
+			<div class="filter-item">
+				배송중 <span class="filter-count">1</span>
+			</div>
+			<div class="filter-item">
+				배송완료 <span class="filter-count">3</span>
+			</div>
+			<div class="filter-item">
+				취소/반품 <span class="filter-count">0</span>
+			</div>
+		</div>
+
+		<!-- 기간 선택 -->
+		<div class="order-period">
+			<button class="period-btn active">1개월</button>
+			<button class="period-btn">3개월</button>
+			<button class="period-btn">6개월</button>
+			<button class="period-btn">1년</button>
+
+			<div class="period-custom">
+				<input type="date" class="period-input" value="2023-05-01">
+				<span class="period-separator">~</span> <input type="date"
+					class="period-input" value="2023-05-31">
+				<button class="search-btn">조회</button>
+			</div>
+		</div>
+
+		<!-- 주문 목록 -->
+		<div class="order-list">
+			<!-- 주문 아이템 1 -->
+			<form action="/orderInfo" method="post">
+			<div class="order-item" th:each="order : ${orders}">
+				<div class="order-header">
+					<div>
+						<input type="hidden" name = "orderNo" th:value="${order.orderNo}">						
+						<div class="order-date">2023-05-20</div>
+						<div class="order-id" th:text="'주문번호: ' + ${order.orderNo}"></div>
+					</div>
+					<span class="order-status status-pending">결제완료</span>
+				</div>
+
+				<div class="order-content">
+
+					<div class="order-product"
+						th:each="orderProduct : ${order.orderProductDTO}">
+						<input type="hidden" name = "orderProductNo" th:value="${orderProduct.orderProductNo}">
+						<img th:src="@{'/upload/' +${orderProduct.imageUrl}}" alt="상품 이미지"
+							class="product-image">
+						<div class="product-details">							
+							<div class="product-name" th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
+							<!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
+							<div class="product-price"
+								th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
+							<div class="product-quantity" th:text = "${'수량: ' + orderProduct.productQuantity + '개'}">수량: 1개</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="order-footer">
+					<div class="order-total" th:text="${'결제금액: ' + #numbers.formatInteger(order.orderPrice,0,'COMMA')} + '원'"></div>
+					<div class="order-actions">					
+						<input type="hidden" name = "orderNo" th:value="${order.orderNo}">
+						<a href="#" class="btn btn-outline">주문 상세</a> 
+						<button	class="btn btn-outline" type="submit" onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
+					
+					</div>
+				</div>
+			</div>
+			</form>
+		</div>
+
+		<!-- 페이지네이션 -->
+		<div class="pagination">
+			<a href="#" class="page-link active">1</a> <a href="#"
+				class="page-link">2</a> <a href="#" class="page-link">3</a> <a
+				href="#" class="page-link"> <svg
+					xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+					viewBox="0 0 24 24" fill="none" stroke="currentColor"
+					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
-      </a>
-    </div>
-    
-    <!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
-    <div class="empty-orders" style="display: none;">
-      <div class="empty-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			</a>
+		</div>
+
+		<!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
+		<div class="empty-orders" style="display: none;">
+			<div class="empty-icon">
+				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+					viewBox="0 0 24 24" fill="none" stroke="currentColor"
+					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <path d="M16 10a4 4 0 0 1-8 0"></path>
         </svg>
-      </div>
-      <h2 class="empty-text">주문 내역이 없습니다</h2>
-      <a href="#" class="btn btn-primary">쇼핑 시작하기</a>
-    </div>
-  </div>
+			</div>
+			<h2 class="empty-text">주문 내역이 없습니다</h2>
+			<a href="#" class="btn btn-primary">쇼핑 시작하기</a>
+		</div>
+	</div>
 </body>
 </html>
