@@ -22,17 +22,11 @@ import com.example.demo.orderProduct.OrderProductService;
 @Controller
 public class OrderController {
 
-    private final PasswordEncoder PasswordEncoder;
 
 	@Autowired
 	OrderService service;
 	@Autowired
 	CartService cartService;
-
-
-    OrderController(PasswordEncoder PasswordEncoder) {
-        this.PasswordEncoder = PasswordEncoder;
-    }
 
 	
 	@GetMapping("/order")
@@ -66,17 +60,9 @@ public class OrderController {
 		dto.setUser(id);
 		dto.setOrderPrice(orderprice);
 		
-//		List<OrderProductDTO> productDTOList = new ArrayList<>();
-//		for(int i = 0; i < productIds.size(); i++) {
-//			OrderProductDTO orderProductDTO = new OrderProductDTO();
-//			orderProductDTO.setProductId(productIds.get(i));
-//			orderProductDTO.setProductQuantity(productQuantities.get(i));
-//			orderProductDTO.setProductPrice(productPrices.get(i));
-//			productDTOList.add(orderProductDTO);
-//		}
 		service.register(dto, dto.getOrderProductDTO());
 		
-//		cartService.removeAll();
+		cartService.removeAll();
 
 		return "redirect:/home";
 	}

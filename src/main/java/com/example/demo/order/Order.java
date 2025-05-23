@@ -65,7 +65,5 @@ public class Order {
 	String orderReq;	
 	@Column
 	String payment;
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<OrderProduct> orderProduct = new ArrayList<>();
 
 }

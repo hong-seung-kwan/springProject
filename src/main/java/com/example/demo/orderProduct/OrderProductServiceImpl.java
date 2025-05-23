@@ -28,18 +28,4 @@ public class OrderProductServiceImpl implements OrderProductService {
 		return list2;
 	}
 
-//	@Override
-//	public int register(OrderProductDTO dto) {
-//		
-//		OrderProduct orderProduct = dtoToEntity(dto);
-//		
-//		repository.save(orderProduct);
-//		int orderProductNo = orderProduct.getOrderProductNo();
-//		
-//		
-//		
-//		return orderProductNo;
-//	}
-
-
 }

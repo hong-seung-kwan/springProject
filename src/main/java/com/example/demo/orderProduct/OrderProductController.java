@@ -22,28 +22,25 @@ public class OrderProductController {
 	OrderService orderService; 
 	
 	@GetMapping("/orderInfo")
-	public String orderInfo(Model model, Principal principal) {
+	public String orderInfo(Model model, Principal principal,OrderProductDTO orderProductDTO) {
 		
 		String userId = principal.getName();
 		List<OrderDTO> orderList = orderService.getOrderByUserId(userId);
 		
+		
+		for (OrderDTO order : orderList) {
+	        int orderId = order.getOrderNo();
+	        List<OrderProductDTO> orderProductList = service.getOrderProductByOrderNo(orderId);
+	        order.setOrderProductDTO(orderProductList);
+	    }
+		int orderNo = orderProductDTO.getOrderId();
+		List<OrderProductDTO> orderProductList = service.getOrderProductByOrderNo(orderNo);
+		
 		model.addAttribute("orders",orderList);
+		model.addAttribute("orderProductList",orderProductList);
 		
 		
 		return "/orderInfo";
 	}
-	
-//	@PostMapping("/order")
-//	public String orderInfoItem(OrderProductDTO dto, Principal principal) {
-//		
-//		String id = principal.getName();
-//		
-//		orderService.getOrderByUserId(id);
-//		
-//		service.register(dto);
-//		
-//		
-//		return "redirect:/home";
-//	}
-	
+		
 }
