@@ -5,6 +5,7 @@ public interface MemberService {
 	
 	boolean register(MemberDTO dto);
 	MemberDTO read(String userId);
+	boolean userId(String userId);
 	
 	default MemberDTO entityToDto(Member member) {
 		
@@ -28,7 +29,7 @@ public interface MemberService {
 										.userName(dto.getUserName())
 										.userPhone(dto.getUserPhone())
 										.userAddress(dto.getUserAddress())
-										.role(dto.getRole())
+										.role("사용자")
 										.build();
 		
 		return member;

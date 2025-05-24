@@ -67,5 +67,13 @@ public class OrderController {
 		return "redirect:/home";
 	}
 	
+	@PostMapping("/orderInfo")
+	public String remove(@RequestParam("orderNo") int orderNo) {
+		service.remove(orderNo);
+		return "redirect:/orderInfo";
+		
+		
+	}
+	
 	
 }

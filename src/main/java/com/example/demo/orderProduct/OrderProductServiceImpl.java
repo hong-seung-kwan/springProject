@@ -33,25 +33,5 @@ public class OrderProductServiceImpl implements OrderProductService {
 		
 		return list2;
 	}
-
-	@Override
-	public boolean remove(OrderProduct orderProduct , int orderNo) {
-		
-		Optional<Order> optional = orderRepository.findById(orderNo);
-		Optional<OrderProduct> optional2 = repository.findById(orderNo);
-		if(optional.isPresent()) {
-			
-			
-			repository.delete(orderProduct);
-			
-			
-			orderRepository.deleteById(orderNo);
-			
-			return true;
-		}		
-		return false;
-		
-	}	
 	
-
 }

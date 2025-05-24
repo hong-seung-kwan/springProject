@@ -8,9 +8,7 @@ import com.example.demo.product.Product;
 public interface OrderProductService {
 		
 	List<OrderProductDTO> getOrderProductByOrderNo(int orderNo);
-	
-	boolean remove(OrderProduct orderProduct ,int orderNo); 
-	
+		
 	default OrderProduct dtoToEntity(OrderProductDTO dto) {
 		
 		

@@ -44,14 +44,6 @@ public class OrderProductController {
 		return "/orderInfo";
 	}
 	
-	@PostMapping("/orderInfo")
-	public String remove(OrderProduct orderProduct, @RequestParam("orderNo") int orderNo) {
-		
-		service.remove(orderProduct,orderNo);
-		
-		
-		return "redirect:/orderInfo";
-		
-	}
+
 		
 }

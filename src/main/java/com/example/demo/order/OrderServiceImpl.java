@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.cart.CartRepository;
 import com.example.demo.orderProduct.OrderProduct;
 import com.example.demo.orderProduct.OrderProductDTO;
@@ -63,6 +65,16 @@ public class OrderServiceImpl implements OrderService {
 			
 			orderProductRepository.save(orderProduct);
  		}
+		
+	}	
+
+	@Transactional
+	@Override
+	public void remove(int orderNo) {
+		
+		orderProductRepository.deleteByOrderOrderNo(orderNo);
+		
+		repository.deleteById(orderNo);
 		
 	}
 

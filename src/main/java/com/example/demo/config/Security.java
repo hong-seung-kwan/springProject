@@ -27,9 +27,9 @@ public class Security {
 			.requestMatchers("/productRegister").permitAll()
 			.requestMatchers("/productModify").permitAll()
 			.requestMatchers("/login").permitAll()
-			.requestMatchers("/cart").permitAll()
 			.requestMatchers("/productInfo").permitAll()
 			.requestMatchers("/upload").permitAll()
+			.requestMatchers("/cart", "/order", "/orderInfo","/cart/add").authenticated()
 			.requestMatchers(new AntPathRequestMatcher("/**")).permitAll();
 		
 		
@@ -48,6 +48,7 @@ public class Security {
 			
 			form
 				.loginPage("/login")
+				.failureUrl("/login?error=fail")
 				.loginProcessingUrl("/login")
 				.permitAll() 
 
@@ -57,6 +58,11 @@ public class Security {
 				});
 			
 		});
+		
+		http.exceptionHandling()
+			.authenticationEntryPoint((request, response, authException) -> {
+				response.sendRedirect("/login?error=unauthenticated");
+			});
 		
 		
 		return http.build();

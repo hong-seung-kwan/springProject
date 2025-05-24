@@ -11,6 +11,8 @@ public interface OrderService {
 	
 	List<OrderDTO> getOrderByUserId(String userId);
 	
+	void remove(int orderNo);
+	
 	
 	default OrderDTO entityToDto(Order order) {
 		String userId = order.getUser().getUserId();

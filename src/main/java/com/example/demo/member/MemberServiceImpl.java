@@ -54,6 +54,14 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
 
+
+
+	@Override
+	public boolean userId(String userId) {
+		
+		return repository.existsById(userId);
+	}
+
 	
 	
 	
