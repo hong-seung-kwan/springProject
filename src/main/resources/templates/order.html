@@ -54,7 +54,7 @@
 							<div class="item-details">
 								<h3 class="item-name" th:text="${item.name}"></h3>
 								<!-- <p class="item-option">옵션: 화이트 / M 사이즈</p> -->
-								<p class="item-price" th:text="${item.price * item.productQuantity + '원'}"></p>
+								<p class="item-price" th:text="${#numbers.formatInteger(item.price * item.productQuantity,0,'COMMA') + '원'}"></p>
 								<p class="item-quantity">수량: [[${item.productQuantity}]]개</p>
 							</div>
 						</div>
@@ -147,17 +147,17 @@
 					<h2>주문 요약</h2>
 					<div class="summary-row">
 						<span class="summary-label">상품 금액</span> 
-						<span class="summary-value" th:text = "${totalPrice} + '원'"></span>
+						<span class="summary-value" th:text = "${#numbers.formatInteger(totalPrice,0,'COMMA')} + '원'"></span>
 					</div>
 
 					<div class="summary-row">
-						<span class="summary-label">배송비</span> <span class="summary-value" th:text = "${delivery} + '원'"></span>
+						<span class="summary-label">배송비</span> <span class="summary-value" th:text = "${#numbers.formatInteger(delivery,0,'COMMA')} + '원'"></span>
 					</div>
 
 					<div class="summary-row summary-total">
 						<input type="hidden" name="totalPrice" th:value="${totalPrice}">
 						<input type="hidden" name="delivery" th:value="${delivery}">
-						<span>총 결제 금액</span> <span th:text = "${totalPrice + delivery} + '원'"></span>
+						<span>총 결제 금액</span> <span th:text = "${#numbers.formatInteger(totalPrice + delivery,0,'COMMA')} + '원'"></span>
 					</div>
 
 					<!-- <div class="agreement">

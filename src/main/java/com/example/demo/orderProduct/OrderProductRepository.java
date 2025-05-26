@@ -8,6 +8,7 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
 	List<OrderProduct> findByOrderOrderNo(int orderNo);
 	
 	void deleteByOrderOrderNo(int orderNo);
+	
 
 	
 }

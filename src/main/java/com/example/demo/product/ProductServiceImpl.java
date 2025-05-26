@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -79,20 +83,35 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductDTO> getList() {
+	public Page<ProductDTO> getList(int pageNumber) {
 		
-		List<Product> product = repository.findAll();
+		int pageNum = (pageNumber == 0) ? 0 : pageNumber -1;
 		
-		List<ProductDTO> dto = new ArrayList<>();
+		Pageable pageable = PageRequest.of(pageNum, 8, Sort.by("productNo").descending());
 		
-		for(Product entity : product) {
-			ProductDTO productDTO = entityToDto(entity);
-			dto.add(productDTO);
-		}
+		Page<Product> entityPage = repository.findAll(pageable);
 		
+		Page<ProductDTO> page = entityPage.map(entity -> entityToDto(entity));
 		
-		return dto;
+		return page;
+				
 	}
+
+//	@Override
+//	public List<ProductDTO> getList() {
+//		
+//		List<Product> product = repository.findAll();
+//		
+//		List<ProductDTO> dto = new ArrayList<>();
+//		
+//		for(Product entity : product) {
+//			ProductDTO productDTO = entityToDto(entity);
+//			dto.add(productDTO);
+//		}
+//		
+//		
+//		return dto;
+//	}
 
 
 }

@@ -5,9 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주문내역 - 쇼핑몰</title>
 <link href="css/orderInfo.css" rel="stylesheet" />
+<link href="css/styles2.css" rel="stylesheet" />
 
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container px-4 px-lg-5">
+			<a class="navbar-brand" href="/home">Start Bootstrap</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+					<li class="nav-item"><a class="nav-link active"
+						aria-current="page" href="/home">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="/orderInfo">My Order</a></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="/home">All Products</a></li>
+							<li><hr class="dropdown-divider" /></li>
+							<li><a class="dropdown-item" href="/bottom">bottom</a></li>
+							<li><a class="dropdown-item" href="/top">top</a></li>
+							<li><a class="dropdown-item" href="/accessories">accessories</a></li>
+						</ul></li>
+				</ul>
+				<div sec:authorize="isAuthenticated()">
+					<p class="mb-0 mr-2" th:text="${#authentication.name} + '님'"></p>
+				</div>
+				<form class="d-flex">
+					<a class="btn btn-outline-dark" type="submit" href="/cart"> <i
+						class="bi-cart-fill me-1"></i> Cart <!-- <span class="badge bg-dark text-white ms-1 rounded-pill">0</span> -->
+					</a>
+
+				</form>
+				<div sec:authorize="isAnonymous()">
+					<a class="btn btn-outline-dark ml-2" type="submit" href="/login">Login</a>
+				</div>
+				<div sec:authorize="isAuthenticated()">
+					<a class="btn btn-outline-dark ml-2" type="submit" href="/logout">Logout</a>
+				</div>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<header>
 			<h1>주문내역</h1>
@@ -51,61 +95,92 @@
 		<div class="order-list">
 			<!-- 주문 아이템 1 -->
 			<form action="/orderInfo" method="post">
-			<div class="order-item" th:each="order : ${orders}">
-				<div class="order-header">
-					<div>
-						<input type="hidden" name = "orderNo" th:value="${order.orderNo}">						
-						<div class="order-date">2023-05-20</div>
-						<div class="order-id" th:text="'주문번호: ' + ${order.orderNo}"></div>
+				<div class="order-item" th:each="order : ${orders}">
+					<div class="order-header">
+						<div>
+							<input type="hidden" name="orderNo" th:value="${order.orderNo}">
+							<div class="order-date"
+								th:text="${#temporals.format(order.orderDate,'yyyy-MM-dd')}"></div>
+							<div class="order-id" th:text="'주문번호: ' + ${order.orderNo}"></div>
+						</div>
+						<span class="order-status status-pending">결제완료</span>
 					</div>
-					<span class="order-status status-pending">결제완료</span>
-				</div>
 
-				<div class="order-content">
+					<div class="order-content">
 
-					<div class="order-product"
-						th:each="orderProduct : ${order.orderProductDTO}">
-						<input type="hidden" name = "orderProductNo" th:value="${orderProduct.orderProductNo}">
-						<img th:src="@{'/upload/' +${orderProduct.imageUrl}}" alt="상품 이미지"
-							class="product-image">
-						<div class="product-details">							
-							<div class="product-name" th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
-							<!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
-							<div class="product-price"
-								th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
-							<div class="product-quantity" th:text = "${'수량: ' + orderProduct.productQuantity + '개'}">수량: 1개</div>
+						<div class="order-product"
+							th:each="orderProduct : ${order.orderProductDTO}">
+							<input type="hidden" name="orderProductNo"
+								th:value="${orderProduct.orderProductNo}"> <img
+								th:src="@{'/upload/' +${orderProduct.imageUrl}}" alt="상품 이미지"
+								class="product-image">
+							<div class="product-details">
+								<div class="product-name"
+									th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
+								<!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
+								<div class="product-price"
+									th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
+								<div class="product-quantity"
+									th:text="${'수량: ' + orderProduct.productQuantity + '개'}">수량:
+									1개</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="order-footer">
+						<div class="order-total"
+							th:text="${'결제금액: ' + #numbers.formatInteger(order.orderPrice,0,'COMMA')} + '원'"></div>
+						<div class="order-actions">
+							<input type="hidden" name="orderNo" th:value="${order.orderNo}">
+							<a href="#" class="btn btn-outline">주문 상세</a>
+							<button class="btn btn-outline" type="submit"
+								onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
+
 						</div>
 					</div>
 				</div>
-
-				<div class="order-footer">
-					<div class="order-total" th:text="${'결제금액: ' + #numbers.formatInteger(order.orderPrice,0,'COMMA')} + '원'"></div>
-					<div class="order-actions">					
-						<input type="hidden" name = "orderNo" th:value="${order.orderNo}">
-						<a href="#" class="btn btn-outline">주문 상세</a> 
-						<button	class="btn btn-outline" type="submit" onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
-					
-					</div>
-				</div>
-			</div>
 			</form>
 		</div>
 
 		<!-- 페이지네이션 -->
 		<div class="pagination">
-			<a href="#" class="page-link active">1</a> <a href="#"
-				class="page-link">2</a> <a href="#" class="page-link">3</a> <a
-				href="#" class="page-link"> <svg
-					xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor"
-					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<div class="pagination"
+				th:if="${orders != null and !orders.isEmpty()}">
+				<a th:if="${orders.number > 0}"
+					th:href="@{/orderInfo(page=${orders.number})}" class="page-link">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 6 9 12 15 18"></polyline>
+        </svg>
+				</a>
+				<th:block
+					th:each="page : ${#numbers.sequence(1, orders.totalPages)}">
+					<th:block th:if="${orders.number + 1 == page}">
+						<a th:href="@{/orderInfo(page = ${page})}"
+							class="page-link active">[[${page}]]</a>
+					</th:block>
+					<th:block th:unless="${orders.number + 1 == page}">
+						<a th:href="@{/orderInfo(page = ${page})}" class="page-link">[[${page}]]</a>
+						<!-- <a href="#" class="page-link">3</a> -->
+					</th:block>
+				</th:block>
+
+				<a th:if="${orders.number + 1 < orders.totalPages}"
+					th:href="@{/orderInfo(page=${orders.number + 2})}"
+					class="page-link"> <svg xmlns="http://www.w3.org/2000/svg"
+						width="16" height="16" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round"
+						stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
-			</a>
+				</a>
+			</div>
 		</div>
 
 		<!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
-		<div class="empty-orders" th:if="${orders == null or orders.isEmpty()}">
+		<div class="empty-orders"
+			th:if="${orders == null or orders.isEmpty()}">
 			<div class="empty-icon">
 				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
 					viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -118,6 +193,5 @@
 			<h2 class="empty-text">주문 내역이 없습니다</h2>
 			<a href="/home" class="btn btn-primary">쇼핑 시작하기</a>
 		</div>
-	</div>
 </body>
 </html>

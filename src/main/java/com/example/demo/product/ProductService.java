@@ -2,14 +2,18 @@ package com.example.demo.product;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 public interface ProductService {
 	
 	int register(ProductDTO dto);
 	
 	ProductDTO read(int productNo);
 	
-	List<ProductDTO> getList();
+//	List<ProductDTO> getList();
 	
+	Page<ProductDTO> getList(int pageNumber);
+		
 	void modify(ProductDTO dto);
 	
 	void remove(int productNo);

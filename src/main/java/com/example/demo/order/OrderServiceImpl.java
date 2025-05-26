@@ -1,8 +1,11 @@
 package com.example.demo.order;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,23 +32,23 @@ public class OrderServiceImpl implements OrderService {
 	OrderProductService orderProductService;
 	
 	
-	@Override
-	public List<OrderDTO> getOrderByUserId(String userId) {
-		
-		List<Order> list = repository.findByUserUserId(userId);
-		
-		List<OrderDTO> dtolist = new ArrayList<>();
-		
-		for(Order order : list) {
-			OrderDTO dto = entityToDto(order);
-			
-			List<OrderProductDTO> productDTO = orderProductService.getOrderProductByOrderNo(order.getOrderNo());
-			dto.setOrderProductDTO(productDTO);
-			dtolist.add(dto);
-		}
-				
-		return dtolist;
-	}
+//	@Override
+//	public List<OrderDTO> getOrderByUserId(String userId) {
+//		
+//		List<Order> list = repository.findByUserUserId(userId);
+//		
+//		List<OrderDTO> dtolist = new ArrayList<>();
+//		
+//		for(Order order : list) {
+//			OrderDTO dto = entityToDto(order);
+//			
+//			List<OrderProductDTO> productDTO = orderProductService.getOrderProductByOrderNo(order.getOrderNo());
+//			dto.setOrderProductDTO(productDTO);
+//			dtolist.add(dto);
+//		}
+//				
+//		return dtolist;
+//	}
 
 
 	@Override
@@ -78,4 +81,23 @@ public class OrderServiceImpl implements OrderService {
 		
 	}
 
+	@Override
+	public Page<OrderDTO> getOrderByUserId(String userId, int pageNum) {
+		
+		int pageNumber = (pageNum == 0) ? 0 : pageNum -1;
+		Pageable pageable = PageRequest.of(pageNumber, 3,Sort.by("orderNo").descending());
+		
+		Page<Order> page = repository.findByUserUserId(userId, pageable);
+		
+		Page<OrderDTO> dtoPage = page.map(order -> {
+			OrderDTO dto = entityToDto(order);
+			
+			List<OrderProductDTO> productDTO = orderProductService.getOrderProductByOrderNo(order.getOrderNo());
+			dto.setOrderProductDTO(productDTO);
+			
+			return dto;
+			
+		});											
+		return dtoPage;
+	}
 }

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.product.Product;
 import com.example.demo.product.ProductDTO;
 import com.example.demo.product.ProductService;
 
@@ -19,74 +21,82 @@ public class HomeController {
 
 	@Autowired
 	ProductService service;
-
-	@GetMapping("/home")
-	public void home(Model model) {
-
-		List<ProductDTO> product = service.getList();
-		model.addAttribute("product", product);
-
-	}
 	
-	@GetMapping("/bottom")
-	public String categoryBottom(Model model) {
+	@GetMapping("/home")
+	public void home(@RequestParam(defaultValue = "0", name = "page") int page, Model model) {
 		
-		List<ProductDTO> list = service.getList();
-		List<ProductDTO> bottomList = new ArrayList<>();
+		Page<ProductDTO> product = service.getList(page);
+		
+		model.addAttribute("product",product);		
+	}
+
+//	@GetMapping("/home")
+//	public void home(Model model) {
+//
+//		List<ProductDTO> product = service.getList();
+//		model.addAttribute("product", product);
+//
+//	}
+		
+	@GetMapping("/bottom")
+	public String categoryBottom(Model model,@RequestParam(defaultValue = "0", name = "page") int page) {
+		
+		Page<ProductDTO> list = service.getList(page);
+		List<ProductDTO> bottomProduct = new ArrayList<>();
 		
 		for(ProductDTO productDTO : list) {
 			if(productDTO.getCategory().equals("bottom")) {
-				bottomList.add(productDTO);
-				
+				bottomProduct.add(productDTO);				
 			}			
 		}
+		Pageable pageable = PageRequest.of(page, list.getSize());
+	    Page<ProductDTO> bottomList = new PageImpl<>(bottomProduct, pageable, bottomProduct.size());
+	    
 		model.addAttribute("bottomlist", bottomList);
 		return "/bottom";		
 	}
 	@GetMapping("/top")
-	public String categoryTop(Model model) {
+	public String categoryTop(Model model,@RequestParam(defaultValue = "0", name = "page") int page) {
 		
-		List<ProductDTO> list = service.getList();
-		List<ProductDTO> topList = new ArrayList<>();
+		Page<ProductDTO> list = service.getList(page);
+		List<ProductDTO> topProduct = new ArrayList<>();
 		
 		for(ProductDTO productDTO : list) {
 			if(productDTO.getCategory().equals("top")) {
-				topList.add(productDTO);
+				topProduct.add(productDTO);
 				
 			}			
 		}
-		model.addAttribute("topList", topList);
+		
+		Pageable pageable = PageRequest.of(page, list.getSize());
+	    Page<ProductDTO> topList = new PageImpl<>(topProduct, pageable, topProduct.size());
+		
+		model.addAttribute("toplist", topList);
 		return "/top";		
 	}
 	@GetMapping("/accessories")
-	public String categoryAccessories(Model model) {
+	public String categoryAccessories(Model model,@RequestParam(defaultValue = "0", name = "page") int page) {
 		
-		List<ProductDTO> list = service.getList();
-		List<ProductDTO> accessoriesList = new ArrayList<>();
+		Page<ProductDTO> list = service.getList(page);
+		List<ProductDTO> accessoriesProduct = new ArrayList<>();
 		
 		for(ProductDTO productDTO : list) {
 			if(productDTO.getCategory().equals("accessories")) {
-				accessoriesList.add(productDTO);
+				accessoriesProduct.add(productDTO);
 				
 			}			
 		}
+		
+		Pageable pageable = PageRequest.of(page, list.getSize());
+	    Page<ProductDTO> accessoriesList = new PageImpl<>(accessoriesProduct, pageable, accessoriesProduct.size());
+		
 		model.addAttribute("accessoriesList", accessoriesList);
 		return "/accessories";		
 	}
 
 }
-
-
-
-/*
- * 주문이력 삭제 구현(완료)
- * 회원가입 아이디중복확인 창 띄우기 (완료)
- * 상품등록,상품수정(관리자만 보이게 수정), 주문이력 url 연결 각 페이지마다 헤더 통일?
+/* 
  * 주문이력에서 주문 상태 및 기간 별 검색
- * 주문이력, 장바구니 상품 없을경우 나타나는 뷰 처리 (완료)
- * 회원 권한 처리(완료)
- * 주문이력, 장바구니 로그인 안했으면 로그인 후 이용가능 알림창 띄우고 로그인 페이지로 넘기기 (완료)
  * 재고관리 구현
- * 페이징 처리,,,
- * ★★★ @Transactional 공부하기 ★★★
+ * 상품검색
  * */

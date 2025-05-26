@@ -2,6 +2,8 @@ package com.example.demo.order;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.example.demo.member.Member;
 import com.example.demo.orderProduct.OrderProductDTO;
 
@@ -9,7 +11,8 @@ public interface OrderService {
 	
 	void register(OrderDTO dto, List<OrderProductDTO> productDTOList);
 	
-	List<OrderDTO> getOrderByUserId(String userId);
+//	List<OrderDTO> getOrderByUserId(String userId);
+	Page<OrderDTO> getOrderByUserId(String userId, int pageNum);
 	
 	void remove(int orderNo);
 	
