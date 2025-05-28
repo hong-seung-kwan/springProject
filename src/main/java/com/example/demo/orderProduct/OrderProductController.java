@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.order.OrderDTO;
 import com.example.demo.order.OrderService;
@@ -19,32 +20,22 @@ import com.example.demo.order.OrderService;
 @Controller
 public class OrderProductController {
 
-	
 	@Autowired
 	OrderProductService service;
 	@Autowired
-	OrderService orderService; 
-	
+	OrderService orderService;
+
 	@GetMapping("/orderInfo")
-	public String orderInfo(Model model, Principal principal,OrderProductDTO orderProductDTO,
-							@RequestParam(value = "page",defaultValue = "1") int page,
-							@RequestParam(value="startDate",required = false) LocalDate startDate,
-							@RequestParam(value="endDate",required = false) LocalDate endDate) {
-		
+	public String orderInfo(Model model, Principal principal, OrderProductDTO orderProductDTO,
+			@RequestParam(value = "page", defaultValue = "1") int page) {
+
 		String userId = principal.getName();
 		Page<OrderDTO> orders = orderService.getOrderByUserId(userId, page);
-		
-		model.addAttribute("orders",orders);
-		
-		if(startDate != null && endDate != null) {
-			List<OrderProductDTO> dto = service.getOrderProductByDate(startDate, endDate);
-			model.addAttribute("dto",dto);
-		}
-		System.out.println("startDate: " + startDate);
-		System.out.println("endDate: " + endDate);
+
+		model.addAttribute("orders", orders);
+
 		return "/orderInfo";
-				
+
 	}
 
-		
 }

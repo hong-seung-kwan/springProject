@@ -29,14 +29,6 @@ public class HomeController {
 		
 		model.addAttribute("product",product);		
 	}
-
-//	@GetMapping("/home")
-//	public void home(Model model) {
-//
-//		List<ProductDTO> product = service.getList();
-//		model.addAttribute("product", product);
-//
-//	}
 		
 	@GetMapping("/bottom")
 	public String categoryBottom(Model model,@RequestParam(defaultValue = "0", name = "page") int page) {
@@ -96,7 +88,7 @@ public class HomeController {
 
 }
 /* 
- * 주문이력에서 주문 상태 및 기간 별 검색
- * 재고관리 구현
  * 상품검색
+ * 주문이력에서 주문 상태 및 기간 별 검색(X)
+ * 재고관리 구현(X)
  * */

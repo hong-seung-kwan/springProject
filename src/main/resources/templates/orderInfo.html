@@ -8,38 +8,43 @@
 <link href="css/styles2.css" rel="stylesheet" />
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Start Bootstrap</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <a href="/cart"><button class="btn btn-outline-dark" type="button">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                         </a>
-                    </form>
-                </div>
-            </div>
-        </nav>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container px-4 px-lg-5">
+			<a class="navbar-brand" href="#!">Start Bootstrap</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+					<li class="nav-item"><a class="nav-link active"
+						aria-current="page" href="/home">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="#!">All Products</a></li>
+							<li><hr class="dropdown-divider" /></li>
+							<li><a class="dropdown-item" href="#!">Popular Items</a></li>
+							<li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+						</ul></li>
+				</ul>
+				<form class="d-flex">
+					<a href="/cart"><button class="btn btn-outline-dark"
+							type="button">
+							<i class="bi-cart-fill me-1"></i> Cart <span
+								class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+						</button> </a>
+				</form>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<header>
-			<h1 class = "mt-3">주문내역</h1>
+			<h1 class="mt-3">주문내역</h1>
 		</header>
 
 		<!-- 주문 상태 필터 -->
@@ -69,15 +74,15 @@
 			<button class="period-btn">1년</button>
 
 			<div class="period-custom">
-				<input type="date" id = "startDate" class="period-input">
-				<span class="period-separator">~</span>
-				<input type="date" id = "endDate" class="period-input" >
-				<button class="search-btn" onclick = "getByDate()">조회</button>
+				<input type="date" id="startDate" class="period-input"> <span
+					class="period-separator">~</span> <input type="date" id="endDate"
+					class="period-input">
+				<button class="search-btn" onclick="getByDate()">조회</button>
 			</div>
 		</div>
 
 		<!-- 주문 목록 -->
-		<div class="order-list">
+		<div class="order-list" id="order-list">
 			<!-- 주문 아이템 1 -->
 			<form action="/orderInfo" method="post">
 				<div class="order-item" th:each="order : ${orders}">
@@ -102,7 +107,7 @@
 							<div class="product-details">
 								<div class="product-name"
 									th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
-								<!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
+								<div class="product-option">옵션: 화이트 / M 사이즈</div>
 								<div class="product-price"
 									th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
 								<div class="product-quantity"
@@ -111,56 +116,6 @@
 							</div>
 						</div>
 					</div>
-
-					<div class="order-footer">
-						<div class="order-total"
-							th:text="${'결제금액: ' + #numbers.formatInteger(order.orderPrice,0,'COMMA')} + '원'"></div>
-						<div class="order-actions">
-							<input type="hidden" name="orderNo" th:value="${order.orderNo}">
-							<a href="#" class="btn btn-outline">주문 상세</a>
-							<button class="btn btn-outline" type="submit"
-								onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
-
-						</div>
-					</div>
-				</div>
-			</form>
-			<div class="order-list" th:if = "${dto != null}">
-			<!-- 주문 아이템 1 -->
-			<form action="/orderInfo" method="post">
-				
-				<div class="order-item" th:each="order : ${dto}">
-					<div class="order-header">
-						<div>
-							<input type="hidden" name="orderNo" th:value="${order.orderNo}">
-							<div class="order-date"
-								th:text="${#temporals.format(order.orderDate,'yyyy-MM-dd')}"></div>
-							<div class="order-id" th:text="'주문번호: ' + ${order.orderNo}"></div>
-						</div>
-						<span class="order-status status-pending">결제완료</span>
-					</div>
-
-					<div class="order-content">
-
-						<div class="order-product"
-							th:each="orderProduct : ${order.orderProductDTO}">
-							<input type="hidden" name="orderProductNo"
-								th:value="${orderProduct.orderProductNo}"> <img
-								th:src="@{'/upload/' +${orderProduct.imageUrl}}" alt="상품 이미지"
-								class="product-image">
-							<div class="product-details">
-								<div class="product-name"
-									th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
-								<!-- <div class="product-option">옵션: 화이트 / M 사이즈</div> -->
-								<div class="product-price"
-									th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
-								<div class="product-quantity"
-									th:text="${'수량: ' + orderProduct.productQuantity + '개'}">수량:
-									1개</div>
-							</div>
-						</div>
-					</div>
-
 					<div class="order-footer">
 						<div class="order-total"
 							th:text="${'결제금액: ' + #numbers.formatInteger(order.orderPrice,0,'COMMA')} + '원'"></div>
@@ -175,76 +130,53 @@
 				</div>
 			</form>
 		</div>
-		<!-- 페이지네이션 -->
-		<div class="pagination">
-			<div class="pagination"
-				th:if="${orders != null and !orders.isEmpty()}">
-				<a th:if="${orders.number > 0}"
-					th:href="@{/orderInfo(page=${orders.number})}" class="page-link">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-						viewBox="0 0 24 24" fill="none" stroke="currentColor"
-						stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 6 9 12 15 18"></polyline>
-        </svg>
-				</a>
-				<th:block
-					th:each="page : ${#numbers.sequence(1, orders.totalPages)}">
-					<th:block th:if="${orders.number + 1 == page}">
-						<a th:href="@{/orderInfo(page = ${page})}"
-							class="page-link active">[[${page}]]</a>
-					</th:block>
-					<th:block th:unless="${orders.number + 1 == page}">
-						<a th:href="@{/orderInfo(page = ${page})}" class="page-link">[[${page}]]</a>
-						<!-- <a href="#" class="page-link">3</a> -->
-					</th:block>
-				</th:block>
-
-				<a th:if="${orders.number + 1 < orders.totalPages}"
-					th:href="@{/orderInfo(page=${orders.number + 2})}"
-					class="page-link"> <svg xmlns="http://www.w3.org/2000/svg"
-						width="16" height="16" viewBox="0 0 24 24" fill="none"
-						stroke="currentColor" stroke-width="2" stroke-linecap="round"
-						stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-				</a>
-			</div>
-		</div>
-
-		<!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
-		<div class="empty-orders"
-			th:if="${orders == null or orders.isEmpty()}">
-			<div class="empty-icon">
-				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+	</div>
+	<!-- 페이지네이션 -->
+	<div class="pagination">
+		<div class="pagination"
+			th:if="${orders != null and !orders.isEmpty()}">
+			<a th:if="${orders.number > 0}"
+				th:href="@{/orderInfo(page=${orders.number})}" class="page-link">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 					viewBox="0 0 24 24" fill="none" stroke="currentColor"
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 6 9 12 15 18"></polyline>
+        </svg>
+			</a>
+			<th:block th:each="page : ${#numbers.sequence(1, orders.totalPages)}">
+				<th:block th:if="${orders.number + 1 == page}">
+					<a th:href="@{/orderInfo(page = ${page})}" class="page-link active">[[${page}]]</a>
+				</th:block>
+				<th:block th:unless="${orders.number + 1 == page}">
+					<a th:href="@{/orderInfo(page = ${page})}" class="page-link">[[${page}]]</a>
+					<!-- <a href="#" class="page-link">3</a> -->
+				</th:block>
+			</th:block>
+
+			<a th:if="${orders.number + 1 < orders.totalPages}"
+				th:href="@{/orderInfo(page=${orders.number + 2})}" class="page-link">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+					viewBox="0 0 24 24" fill="none" stroke="currentColor"
+					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+			</a>
+		</div>
+	</div>
+
+	<!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
+	<div class="empty-orders" th:if="${orders == null or orders.isEmpty()}">
+		<div class="empty-icon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+				viewBox="0 0 24 24" fill="none" stroke="currentColor"
+				stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <path d="M16 10a4 4 0 0 1-8 0"></path>
         </svg>
-			</div>
-			<h2 class="empty-text">주문 내역이 없습니다</h2>
-			<a href="/home" class="btn btn-primary">쇼핑 시작하기</a>
 		</div>
-		</div>
-		<script type="text/javascript">
-			 function getByDate() {
-		        var startDate = document.getElementById('startDate').value;
-		        var endDate = document.getElementById('endDate').value;
-		        var url = '/orderInfo?startDate=' + startDate + '&endDate=' + endDate;
-		        window.location.href = url;
-		    }
-			document.addEventListener("DOMContentLoaded", function () {
-			    const today = new Date().toISOString().split("T")[0];
-
-			    const startDateInput = document.getElementById('startDate');
-			    const endDateInput = document.getElementById('endDate');
-			    
-			    
-			    startDateInput.value = today;
-			    endDateInput.value = today;
-			});
-
-		</script>
+		<h2 class="empty-text">주문 내역이 없습니다</h2>
+		<a href="/home" class="btn btn-primary">쇼핑 시작하기</a>
+	</div>
 </body>
 </html>
