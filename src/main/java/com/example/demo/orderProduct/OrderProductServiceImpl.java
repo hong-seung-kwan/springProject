@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.order.OrderRepository;
 
@@ -37,5 +38,21 @@ public class OrderProductServiceImpl implements OrderProductService {
 		
 		return list2;
 	}
+	
+	@Transactional
+	@Override
+	public List<OrderProductDTO> getOrderProductByDate(LocalDate startDate, LocalDate endDate) {
+				
+		List<OrderProduct> list = repository.findByOrderOrderDate(startDate, endDate);
+		List<OrderProductDTO> list2 = new ArrayList<>();
+		
+		for(OrderProduct orderProduct :list) {
+			OrderProductDTO dto = entityToDto(orderProduct);
+			list2.add(dto);
+		}		
+		return list2;
+	}
+
+
 	
 }

@@ -1,6 +1,7 @@
 package com.example.demo.orderProduct;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,39 +25,25 @@ public class OrderProductController {
 	@Autowired
 	OrderService orderService; 
 	
-//	@GetMapping("/orderInfo")
-//	public String orderInfo(Model model, Principal principal) {
-//		
-//		String userId = principal.getName();
-//		List<OrderDTO> orderList = orderService.getOrderByUserId(userId);
-//		
-//		
-//		for (OrderDTO order : orderList) {
-//	        int orderId = order.getOrderNo();
-//	        List<OrderProductDTO> orderProductList = service.getOrderProductByOrderNo(orderId);
-//	        order.setOrderProductDTO(orderProductList);
-//	    }
-//		int orderNo = orderProductDTO.getOrderId();
-//		List<OrderProductDTO> orderProductList = service.getOrderProductByOrderNo(orderNo);
-//		
-//		model.addAttribute("orders",orderList);
-//		model.addAttribute("orderProductList",orderProductList);
-//		
-//		
-//		return "/orderInfo";
-//	}
 	@GetMapping("/orderInfo")
-	public String orderInfo(Model model, Principal principal,OrderProductDTO orderProductDTO,@RequestParam(value = "page",defaultValue = "1") int page) {
+	public String orderInfo(Model model, Principal principal,OrderProductDTO orderProductDTO,
+							@RequestParam(value = "page",defaultValue = "1") int page,
+							@RequestParam(value="startDate",required = false) LocalDate startDate,
+							@RequestParam(value="endDate",required = false) LocalDate endDate) {
 		
 		String userId = principal.getName();
 		Page<OrderDTO> orders = orderService.getOrderByUserId(userId, page);
 		
 		model.addAttribute("orders",orders);
 		
+		if(startDate != null && endDate != null) {
+			List<OrderProductDTO> dto = service.getOrderProductByDate(startDate, endDate);
+			model.addAttribute("dto",dto);
+		}
+		System.out.println("startDate: " + startDate);
+		System.out.println("endDate: " + endDate);
 		return "/orderInfo";
-		
-		
-		
+				
 	}
 
 		

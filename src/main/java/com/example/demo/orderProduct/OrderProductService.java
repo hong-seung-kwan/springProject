@@ -1,5 +1,7 @@
 package com.example.demo.orderProduct;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import com.example.demo.order.Order;
 import com.example.demo.product.Product;
@@ -8,7 +10,7 @@ public interface OrderProductService {
 		
 	List<OrderProductDTO> getOrderProductByOrderNo(int orderNo);
 	
-	
+	List<OrderProductDTO> getOrderProductByDate(LocalDate startDate,LocalDate endDate);
 			
 	default OrderProduct dtoToEntity(OrderProductDTO dto) {
 		
@@ -41,6 +43,7 @@ public interface OrderProductService {
 											.productPrice(entity.getProductPrice())
 											.imageUrl(entity.getProduct().getImageUrl())	
 											.productName(entity.getProduct().getName())
+											.orderDate(entity.getOrder().getOrderDate())
 											.build();
 		
 		return dto;

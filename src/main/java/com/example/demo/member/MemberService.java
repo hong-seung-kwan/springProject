@@ -29,7 +29,7 @@ public interface MemberService {
 										.userName(dto.getUserName())
 										.userPhone(dto.getUserPhone())
 										.userAddress(dto.getUserAddress())
-										.role("사용자")
+										.role("ROLE_USER")
 										.build();
 		
 		return member;
