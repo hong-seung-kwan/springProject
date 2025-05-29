@@ -16,5 +16,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value = "SELECT * FROM CART WHERE USER_ID = :userId", nativeQuery = true)
 	List<Cart> findByUserId(@Param("userId") String userId);
 	
-	Page<Order> findByUserUserId(String userId, Pageable pageable);
+	List<Order> findByUserUserId(String userId);
 }

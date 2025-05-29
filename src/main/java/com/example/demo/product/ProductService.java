@@ -9,14 +9,14 @@ public interface ProductService {
 	int register(ProductDTO dto);
 	
 	ProductDTO read(int productNo);
-	
-//	List<ProductDTO> getList();
-	
+		
 	Page<ProductDTO> getList(int pageNumber);
 		
 	void modify(ProductDTO dto);
 	
 	void remove(int productNo);
+	
+	Page<ProductDTO> search(String keyword, int pageNumber);
 		
 	default ProductDTO entityToDto(Product product) {
 		

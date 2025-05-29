@@ -4,13 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주문내역 - 쇼핑몰</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<!-- Favicon-->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<!-- Bootstrap icons-->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+	rel="stylesheet" />
 <link href="css/orderInfo.css" rel="stylesheet" />
-<link href="css/styles2.css" rel="stylesheet" />
+<link href="css/styles.css" rel="stylesheet" />
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container px-4 px-lg-5">
-			<a class="navbar-brand" href="#!">Start Bootstrap</a>
+			<a class="navbar-brand" href="/home">Start Bootstrap</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -21,24 +31,33 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/home">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+					<li class="nav-item"><a class="nav-link" href="/orderInfo">My
+							Order</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
 						role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" href="#!">All Products</a></li>
+							<li><a class="dropdown-item" href="/home">All Products</a></li>
 							<li><hr class="dropdown-divider" /></li>
-							<li><a class="dropdown-item" href="#!">Popular Items</a></li>
-							<li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+							<li><a class="dropdown-item" href="/bottom">bottom</a></li>
+							<li><a class="dropdown-item" href="/top">top</a></li>
+							<li><a class="dropdown-item" href="/accessories">accessories</a></li>
 						</ul></li>
 				</ul>
+				<div sec:authorize="isAuthenticated()">
+					<p class="mb-0 mr-2" th:text="${#authentication.name} + '님'"></p>
+				</div>
 				<form class="d-flex">
-					<a href="/cart"><button class="btn btn-outline-dark"
-							type="button">
-							<i class="bi-cart-fill me-1"></i> Cart <span
-								class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-						</button> </a>
+					<a class="btn btn-outline-dark" type="submit" href="/cart"> <i
+						class="bi-cart-fill me-1"></i> Cart
+					</a>
 				</form>
+				<div sec:authorize="isAnonymous()">
+					<a class="btn btn-outline-dark ml-2" type="submit" href="/login">Login</a>
+				</div>
+				<div sec:authorize="isAuthenticated()">
+					<a class="btn btn-outline-dark ml-2" type="submit" href="/logout">Logout</a>
+				</div>
 			</div>
 		</div>
 	</nav>
@@ -68,16 +87,16 @@
 
 		<!-- 기간 선택 -->
 		<div class="order-period">
-			<button class="period-btn active">1개월</button>
+			<!-- <button class="period-btn active">1개월</button>
 			<button class="period-btn">3개월</button>
 			<button class="period-btn">6개월</button>
-			<button class="period-btn">1년</button>
+			<button class="period-btn">1년</button> -->
 
 			<div class="period-custom">
 				<input type="date" id="startDate" class="period-input"> <span
 					class="period-separator">~</span> <input type="date" id="endDate"
 					class="period-input">
-				<button class="search-btn" onclick="getByDate()">조회</button>
+				<button class="search-btn" onclick="orderInfoDate()">조회</button>
 			</div>
 		</div>
 
@@ -107,7 +126,7 @@
 							<div class="product-details">
 								<div class="product-name"
 									th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
-								<div class="product-option">옵션: 화이트 / M 사이즈</div>
+
 								<div class="product-price"
 									th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
 								<div class="product-quantity"
@@ -131,39 +150,6 @@
 			</form>
 		</div>
 	</div>
-	<!-- 페이지네이션 -->
-	<div class="pagination">
-		<div class="pagination"
-			th:if="${orders != null and !orders.isEmpty()}">
-			<a th:if="${orders.number > 0}"
-				th:href="@{/orderInfo(page=${orders.number})}" class="page-link">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor"
-					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 6 9 12 15 18"></polyline>
-        </svg>
-			</a>
-			<th:block th:each="page : ${#numbers.sequence(1, orders.totalPages)}">
-				<th:block th:if="${orders.number + 1 == page}">
-					<a th:href="@{/orderInfo(page = ${page})}" class="page-link active">[[${page}]]</a>
-				</th:block>
-				<th:block th:unless="${orders.number + 1 == page}">
-					<a th:href="@{/orderInfo(page = ${page})}" class="page-link">[[${page}]]</a>
-					<!-- <a href="#" class="page-link">3</a> -->
-				</th:block>
-			</th:block>
-
-			<a th:if="${orders.number + 1 < orders.totalPages}"
-				th:href="@{/orderInfo(page=${orders.number + 2})}" class="page-link">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-					viewBox="0 0 24 24" fill="none" stroke="currentColor"
-					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-			</a>
-		</div>
-	</div>
-
 	<!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
 	<div class="empty-orders" th:if="${orders == null or orders.isEmpty()}">
 		<div class="empty-icon">
@@ -178,5 +164,73 @@
 		<h2 class="empty-text">주문 내역이 없습니다</h2>
 		<a href="/home" class="btn btn-primary">쇼핑 시작하기</a>
 	</div>
+	<script th:inline="javascript">
+		function orderInfoDate() {
+			var startDate = document.getElementById('startDate').value;
+			var endDate = document.getElementById('endDate').value;
+			
+			fetch(`/orderInfo/date?startDate=${startDate}&endDate=${endDate}`)
+			.then(response => response.json())
+			.then(data => {				
+				console.log(data);
+
+		        if (data && Array.isArray(data)) {
+		            console.log('data is an array:', data);
+								
+				var orderContainer = document.getElementById('order-list');
+				orderContainer.innerHTML = '';
+				
+				data.forEach(order => {
+					var orderList = `
+						<form action="/orderInfo" method="post">
+						<div class="order-item">
+							<div class="order-header">
+								<div>
+									<input type="hidden" name="orderNo" value="${order.orderNo}">
+									<div class="order-date">${new Date(order.orderDate).toLocaleDateString()}</div>
+									<div class="order-id">${order.orderId}</div>
+								</div>
+								<span class="order-status status-pending">결제완료</span>
+							</div>
+
+							<div class="order-content">								
+								<div class="order-product">
+									<input type="hidden" name="orderProductNo"
+										value="${order.orderProductNo}"> <img
+										src="/upload/${order.imageUrl}" alt="상품 이미지"
+										class="product-image">
+									<div class="product-details">
+										<div class="product-name"
+											text="${order.productName != null ? order.productName : '상품명 없음'}"></div>
+										<div class="product-price">${order.productPrice.toLocaleString()}원</div>
+										<div class="product-quantity">${order.productQuantity}개</div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="order-footer">
+								<div class="order-total">결제금액: ${order.orderPrice.toLocaleString()}원</div>
+								<div class="order-actions">
+									<input type="hidden" name="orderNo" value="${order.orderNo}">
+									<a href="#" class="btn btn-outline">주문 상세</a>
+									<button class="btn btn-outline" type="submit"
+										onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
+
+								</div>
+							</div>
+						</div>
+					</form>
+					`;
+					orderContainer.innerHTML += orderList;
+				});
+		        }else{
+		        	console.error('데이터 오류: content는 배열이 아니거나 존재하지 않습니다.');
+		        }
+			})
+			.catch(error => console.error('Error:',error));
+		}
+		
+	
+	</script>
 </body>
 </html>

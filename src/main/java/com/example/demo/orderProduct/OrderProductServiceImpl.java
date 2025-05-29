@@ -41,9 +41,10 @@ public class OrderProductServiceImpl implements OrderProductService {
 	
 	@Transactional
 	@Override
-	public List<OrderProductDTO> getOrderProductByDate(LocalDate startDate, LocalDate endDate) {
+	public List<OrderProductDTO> getOrderProductByDate(String userId,LocalDate startDate, LocalDate endDate) {
 				
-		List<OrderProduct> list = repository.findByOrderOrderDate(startDate, endDate);
+		List<OrderProduct> list = repository.findByOrderOrderDate(userId,startDate, endDate);
+		
 		List<OrderProductDTO> list2 = new ArrayList<>();
 		
 		for(OrderProduct orderProduct :list) {

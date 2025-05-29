@@ -48,6 +48,58 @@
 	color: white;
 	border-color: #4a90e2;
 }
+
+/* 검색 영역 스타일 */
+.search-container {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 20px 0;
+}
+
+.search-form {
+	display: flex;
+	position: relative;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 50px;
+	overflow: hidden;
+}
+
+.search-input {
+	flex: 1;
+	padding: 12px 20px;
+	border: 1px solid #ddd;
+	border-right: none;
+	border-radius: 50px 0 0 50px;
+	font-size: 16px;
+	outline: none;
+	transition: all 0.3s;
+}
+
+.search-input:focus {
+	border-color: #4a90e2;
+	box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.search-btn {
+	background-color: darkgray;
+	color: white;
+	border: none;
+	padding: 0 25px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	border-radius: 0 50px 50px 0;
+	display: flex;
+	align-items: center;
+}
+
+.search-btn:hover {
+	background-color: #3a7bc8;
+}
+
+.search-icon {
+	margin-right: 5px;
+}
 </style>
 </head>
 <body>
@@ -65,7 +117,8 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="/home">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/orderInfo">My Order</a></li>
+					<li class="nav-item"><a class="nav-link" href="/orderInfo">My
+							Order</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
 						role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -76,15 +129,18 @@
 							<li><a class="dropdown-item" href="/top">top</a></li>
 							<li><a class="dropdown-item" href="/accessories">accessories</a></li>
 						</ul></li>
+						<div sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="nav-item"><a class="nav-link"
+						aria-current="page" href="/productRegister">register</a></li>
+						</div>
 				</ul>
 				<div sec:authorize="isAuthenticated()">
 					<p class="mb-0 mr-2" th:text="${#authentication.name} + '님'"></p>
 				</div>
 				<form class="d-flex">
 					<a class="btn btn-outline-dark" type="submit" href="/cart"> <i
-						class="bi-cart-fill me-1"></i> Cart <!-- <span class="badge bg-dark text-white ms-1 rounded-pill">0</span> -->
+						class="bi-cart-fill me-1"></i> Cart
 					</a>
-
 				</form>
 				<div sec:authorize="isAnonymous()">
 					<a class="btn btn-outline-dark ml-2" type="submit" href="/login">Login</a>
@@ -95,6 +151,7 @@
 			</div>
 		</div>
 	</nav>
+
 	<!-- Header-->
 	<header class="bg-dark py-5">
 		<div class="container px-4 px-lg-5 my-5">
@@ -105,15 +162,27 @@
 			</div>
 		</div>
 	</header>
+
+	<!-- 검색 섹션 -->
+	<div class="container px-4 px-lg-5">
+		<div class="search-container">
+			<form class="search-form" action="javascript:void(0);" method="get">
+				<input type="text" id="search-input" name="keyword"
+					class="search-input" placeholder="상품명을 입력하세요"
+					th:value="${param.keyword}">
+				<button type="submit" class="search-btn" onclick="searchProducts()">
+					<i class="bi bi-search search-icon"></i> 검색
+				</button>
+			</form>
+		</div>
+	</div>
+
 	<!-- Section-->
-	<section class="py-5">
-		
+	<section class="py-4">
 		<div class="container px-4 px-lg-5 mt-5">
-		<div>
-					<a class="btn btn-outline-dark ml-2" type="submit" href="/productRegister" sec:authorize="hasRole('ROLE_ADMIN')">상품등록</a>
-				</div>
 			<div
-				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+				id="product-list">
 				<div class="col mb-5" th:each="item : ${product}">
 					<div class="card h-100">
 						<!-- Product image-->
@@ -144,8 +213,8 @@
 		<!-- 페이지네이션 -->
 		<div class="pagination">
 			<a th:if="${product.number > 0}"
-				th:href="@{/home(page=${product.number})}" class="page-link">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+				th:href="@{/home(page=${product.number})}" class="page-link"> <svg
+					xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 					viewBox="0 0 24 24" fill="none" stroke="currentColor"
 					stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 6 9 12 15 18"></polyline>
@@ -158,8 +227,6 @@
 				</th:block>
 				<th:block th:unless="${product.number+1 == page}">
 					<a th:href="@{/home(page = ${page})}" class="page-link">[[${page}]]</a>
-					<!-- <a href="#" class="page-link"></a> -->
-
 				</th:block>
 			</th:block>
 			<a th:if="${product.number + 1 < product.totalPages}"
@@ -178,16 +245,45 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="js/scripts.js"></script>
+
+	<script>
+	  function searchProducts() {
+	      var keyword = document.getElementById('search-input').value;
+	      var page = 0;
+	
+	      fetch(`/home/search?keyword=${keyword}&page=${page}`)
+	      .then(response => response.json())
+	      .then(data => {
+	          
+	          var productContainer = document.getElementById('product-list');
+	          productContainer.innerHTML = '';
+	          	          
+	          data.content.forEach(product => {
+                  var productCard = `
+                      <div class="col mb-5">
+                          <div class="card h-100">
+                              <img class="card-img-top h-75" src="/upload/${product.imageUrl}" alt="이미지없음.." />
+                              <div class="card-body p-4">
+                                  <div class="text-center">
+                                      <h5 class="fw-bolder">${product.name}</h5>
+                                      <p>${product.price.toLocaleString()}원</p>
+                                  </div>
+                              </div>
+                              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                  <div class="text-center">
+                                      <a class="btn btn-outline-dark mt-auto" href="/productInfo?no=${product.productNo}&page=${data.number + 1})">상품 보기</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  `;
+                  productContainer.innerHTML += productCard;
+                  
+              });
+          })
+          .catch(error => console.error('Error:', error));
+  }
+</script>
+
 </body>
 </html>
-
-
-
-
-<!-- 
-기능	예시	설명
-로그인 상태 확인	sec:authorize="isAuthenticated()"	로그인한 사용자만 보이게
-로그아웃 상태 확인	sec:authorize="isAnonymous()"	비로그인 사용자만 보이게
-권한 확인	sec:authorize="hasRole('ADMIN')"	ADMIN 권한일 때만 보이게
-사용자 이름 출력	${#authentication.name}	현재 로그인된 사용자 이름 출력
- -->

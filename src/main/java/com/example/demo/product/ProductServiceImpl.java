@@ -10,8 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.order.OrderRepository;
+import com.example.demo.orderProduct.OrderProductRepository;
 import com.example.demo.util.FileUtil;
 
 @Service
@@ -19,6 +22,10 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductRepository repository;
+	@Autowired
+	OrderProductRepository orderProductRepository;
+	@Autowired
+	OrderRepository orderRepository;
 	@Autowired
 	FileUtil util;
 	
@@ -72,12 +79,12 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 	}
-
+	@Transactional
 	@Override
 	public void remove(int productNo) {
 		
 		Optional<Product> optional = repository.findById(productNo);
-		if(optional.isPresent()) {
+		if(optional.isPresent()) {			
 			repository.deleteById(productNo);
 		}
 	}
@@ -96,22 +103,14 @@ public class ProductServiceImpl implements ProductService {
 		return page;
 				
 	}
-
-//	@Override
-//	public List<ProductDTO> getList() {
-//		
-//		List<Product> product = repository.findAll();
-//		
-//		List<ProductDTO> dto = new ArrayList<>();
-//		
-//		for(Product entity : product) {
-//			ProductDTO productDTO = entityToDto(entity);
-//			dto.add(productDTO);
-//		}
-//		
-//		
-//		return dto;
-//	}
-
-
+	
+	@Override
+	public Page<ProductDTO> search(String keyword, int pageNumber) {
+		
+		PageRequest pageRequest = PageRequest.of(pageNumber, 8);
+		
+			Page<Product> product = repository.findByName(keyword, pageRequest);
+			Page<ProductDTO> productDTO = product.map(entity -> entityToDto(entity));
+			return productDTO;
+	}
 }

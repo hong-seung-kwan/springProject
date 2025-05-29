@@ -11,8 +11,7 @@ public interface OrderService {
 	
 	void register(OrderDTO dto, List<OrderProductDTO> productDTOList);
 	
-//	List<OrderDTO> getOrderByUserId(String userId);
-	Page<OrderDTO> getOrderByUserId(String userId, int pageNum);
+	List<OrderDTO> getOrderByUserId(String userId);
 	
 	void remove(int orderNo);
 	

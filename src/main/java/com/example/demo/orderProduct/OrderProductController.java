@@ -26,11 +26,10 @@ public class OrderProductController {
 	OrderService orderService;
 
 	@GetMapping("/orderInfo")
-	public String orderInfo(Model model, Principal principal, OrderProductDTO orderProductDTO,
-			@RequestParam(value = "page", defaultValue = "1") int page) {
+	public String orderInfo(Model model, Principal principal, OrderProductDTO orderProductDTO) {
 
 		String userId = principal.getName();
-		Page<OrderDTO> orders = orderService.getOrderByUserId(userId, page);
+		List<OrderDTO> orders = orderService.getOrderByUserId(userId);
 
 		model.addAttribute("orders", orders);
 

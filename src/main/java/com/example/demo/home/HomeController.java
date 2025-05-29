@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.product.ProductDTO;
 import com.example.demo.product.ProductService;
@@ -25,11 +26,11 @@ public class HomeController {
 	@GetMapping("/home")
 	public void home(@RequestParam(defaultValue = "0", name = "page") int page, Model model) {
 		
-		Page<ProductDTO> product = service.getList(page);
 		
-		model.addAttribute("product",product);		
-	}
+			Page<ProductDTO> product = service.getList(page);		
+			model.addAttribute("product",product);
 		
+	}		
 	@GetMapping("/bottom")
 	public String categoryBottom(Model model,@RequestParam(defaultValue = "0", name = "page") int page) {
 		
@@ -87,8 +88,7 @@ public class HomeController {
 	}
 
 }
+
 /* 
- * 상품검색
- * 주문이력에서 주문 상태 및 기간 별 검색(X)
  * 재고관리 구현(X)
  * */

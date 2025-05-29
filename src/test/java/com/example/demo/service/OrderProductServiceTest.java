@@ -14,15 +14,6 @@ import com.example.demo.orderProduct.OrderProductService;
 public class OrderProductServiceTest {
 	@Autowired
 	OrderProductService service;
-	@Test
-	void 날짜조회() {
-		LocalDate startDate = LocalDate.parse("2025-05-28");
-		LocalDate endDate = LocalDate.parse("2025-05-28");
-		
-		List<OrderProductDTO> result = service.getOrderProductByDate(startDate, endDate);
-		
-		System.out.println(result);
-	}
-	
+
 	
 }

@@ -3,6 +3,9 @@ package com.example.demo.orderProduct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.example.demo.order.Order;
 import com.example.demo.product.Product;
 
@@ -10,7 +13,7 @@ public interface OrderProductService {
 		
 	List<OrderProductDTO> getOrderProductByOrderNo(int orderNo);
 	
-	List<OrderProductDTO> getOrderProductByDate(LocalDate startDate,LocalDate endDate);
+	List<OrderProductDTO> getOrderProductByDate(String userId,LocalDate startDate,LocalDate endDate);
 			
 	default OrderProduct dtoToEntity(OrderProductDTO dto) {
 		
@@ -35,7 +38,7 @@ public interface OrderProductService {
 	
 	default OrderProductDTO entityToDto(OrderProduct entity) {
 		
-		// 상품가격 상품수량 상품가격 총가격 이미지url 
+		
 		OrderProductDTO dto = OrderProductDTO.builder()
 											.orderProductNo(entity.getOrderProductNo())
 											.orderId(entity.getOrder().getOrderNo())											
@@ -44,6 +47,7 @@ public interface OrderProductService {
 											.imageUrl(entity.getProduct().getImageUrl())	
 											.productName(entity.getProduct().getName())
 											.orderDate(entity.getOrder().getOrderDate())
+											.orderPrice(entity.getOrder().getOrderPrice())
 											.build();
 		
 		return dto;
