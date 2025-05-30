@@ -31,6 +31,7 @@ public class OrderDTO {
 	String orderName;
 	String orderReq;
 	String payment;
+	String status;
 	
 	List<OrderProductDTO> orderProductDTO;
 	

@@ -32,7 +32,7 @@ public class OrderProductController {
 		List<OrderDTO> orders = orderService.getOrderByUserId(userId);
 
 		model.addAttribute("orders", orders);
-
+		System.out.println(orders);
 		return "/orderInfo";
 
 	}

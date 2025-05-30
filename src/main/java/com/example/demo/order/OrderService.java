@@ -1,5 +1,6 @@
 package com.example.demo.order;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -15,6 +16,9 @@ public interface OrderService {
 	
 	void remove(int orderNo);
 	
+	List<OrderDTO> getOrderByDate(String userId,LocalDate startDate,LocalDate endDate);
+	
+	List<OrderDTO> getOrderByStatus(String userId, String status);
 	
 	default OrderDTO entityToDto(Order order) {
 		String userId = order.getUser().getUserId();
@@ -30,6 +34,7 @@ public interface OrderService {
 									.orderDate(order.getOrderDate())
 									.user(userId)
 									.payment(order.getPayment())
+									.status(order.getStatus())
 									.build();
 		return dto;
 	}
@@ -49,6 +54,7 @@ public interface OrderService {
 									.orderDate(dto.getOrderDate())
 									.user(member)
 									.payment(dto.getPayment())
+									.status("결제완료")
 									.build();
 		return entity;
 	}

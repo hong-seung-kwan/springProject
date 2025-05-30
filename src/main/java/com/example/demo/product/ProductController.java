@@ -30,11 +30,6 @@ public class ProductController {
 		return "redirect:/home";
 	}
 
-//	@GetMapping("/productInfo")
-//	public void info() {
-//
-//	}
-
 	@GetMapping("/productInfo")
 	public void productInfo(Model model,@RequestParam(name = "no") int productNo) {
 		ProductDTO product = service.read(productNo);

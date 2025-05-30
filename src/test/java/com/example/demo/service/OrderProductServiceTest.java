@@ -14,6 +14,12 @@ import com.example.demo.orderProduct.OrderProductService;
 public class OrderProductServiceTest {
 	@Autowired
 	OrderProductService service;
-
 	
+//	@Test
+//	void 상태별조회() {
+//		
+//		List<OrderProductDTO> list = service.getByStatus("user1", "배송완료");
+//		System.out.println(list);
+//	}
+//	
 }

@@ -76,21 +76,4 @@ public class CartController {
 		service.decreaseQuantity(cartNo);
 		return "redirect:/cart";
 	}
-	
-//	@GetMapping("/cart")
-//	public String totalPrice(Model model, Principal principal) {
-//		String userId = principal.getName();
-//		
-//		List<CartDTO> list = service.getListByUserId(userId);
-//		int sum = 0;
-//		for(CartDTO dto:list) {
-//			sum += dto.getPrice() * dto.getProductQuantity();
-//		}
-//		
-//		model.addAttribute("list",list);
-//		model.addAttribute("sum",sum);
-//		
-//		return "/cart";
-//	}
-
 }

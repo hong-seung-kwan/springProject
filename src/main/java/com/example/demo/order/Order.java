@@ -56,5 +56,7 @@ public class Order {
 	String orderReq;	
 	@Column
 	String payment;
+	@Column
+	String status;
 
 }

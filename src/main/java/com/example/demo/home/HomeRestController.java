@@ -11,7 +11,7 @@ import com.example.demo.product.ProductDTO;
 import com.example.demo.product.ProductService;
 
 @RestController
-public class HomeControllers {
+public class HomeRestController {
 
 	@Autowired
 	ProductService service; 
@@ -27,7 +27,6 @@ public class HomeControllers {
 	    } else {
 	    	product = service.getList(page);
 	    }
-		
         return product;
     }
 }

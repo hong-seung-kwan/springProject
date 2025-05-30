@@ -90,5 +90,9 @@ public class HomeController {
 }
 
 /* 
- * 재고관리 구현(X)
+ * 기획의도 및 주제
+	db 구조
+	사용기술
+	기능설명
+	비즈니스 로직
  * */

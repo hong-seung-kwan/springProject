@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.order.Order;
+import com.example.demo.order.OrderDTO;
 import com.example.demo.order.OrderRepository;
 
 
@@ -52,8 +54,5 @@ public class OrderProductServiceImpl implements OrderProductService {
 			list2.add(dto);
 		}		
 		return list2;
-	}
-
-
-	
+	}	
 }

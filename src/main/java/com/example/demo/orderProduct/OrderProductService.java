@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.example.demo.order.Order;
+import com.example.demo.order.OrderDTO;
 import com.example.demo.product.Product;
 
 public interface OrderProductService {
@@ -14,7 +15,7 @@ public interface OrderProductService {
 	List<OrderProductDTO> getOrderProductByOrderNo(int orderNo);
 	
 	List<OrderProductDTO> getOrderProductByDate(String userId,LocalDate startDate,LocalDate endDate);
-			
+				
 	default OrderProduct dtoToEntity(OrderProductDTO dto) {
 		
 		
@@ -48,6 +49,8 @@ public interface OrderProductService {
 											.productName(entity.getProduct().getName())
 											.orderDate(entity.getOrder().getOrderDate())
 											.orderPrice(entity.getOrder().getOrderPrice())
+											.status(entity.getOrder().getStatus())
+											.productId(entity.getProduct().getProductNo())
 											.build();
 		
 		return dto;

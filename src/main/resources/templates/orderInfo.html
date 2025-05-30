@@ -68,30 +68,22 @@
 
 		<!-- 주문 상태 필터 -->
 		<div class="order-status-filter">
-			<div class="filter-item active">
-				전체 <span class="filter-count">6</span>
+			<div class="filter-item active" data-status="전체">
+				전체 
 			</div>
-			<div class="filter-item">
-				결제완료 <span class="filter-count">2</span>
+			<div class="filter-item " data-status="결제완료">
+				결제완료 
 			</div>
-			<div class="filter-item">
-				배송중 <span class="filter-count">1</span>
+			<div class="filter-item " data-status="배송중">
+				배송중 
 			</div>
-			<div class="filter-item">
-				배송완료 <span class="filter-count">3</span>
-			</div>
-			<div class="filter-item">
-				취소/반품 <span class="filter-count">0</span>
+			<div class="filter-item" data-status="배송완료">
+				배송완료
 			</div>
 		</div>
 
 		<!-- 기간 선택 -->
 		<div class="order-period">
-			<!-- <button class="period-btn active">1개월</button>
-			<button class="period-btn">3개월</button>
-			<button class="period-btn">6개월</button>
-			<button class="period-btn">1년</button> -->
-
 			<div class="period-custom">
 				<input type="date" id="startDate" class="period-input"> <span
 					class="period-separator">~</span> <input type="date" id="endDate"
@@ -112,7 +104,7 @@
 								th:text="${#temporals.format(order.orderDate,'yyyy-MM-dd')}"></div>
 							<div class="order-id" th:text="'주문번호: ' + ${order.orderNo}"></div>
 						</div>
-						<span class="order-status status-pending">결제완료</span>
+						<span class="order-status status-pending">[[${order.status}]]</span>
 					</div>
 
 					<div class="order-content">
@@ -181,6 +173,7 @@
 				orderContainer.innerHTML = '';
 				
 				data.forEach(order => {
+					
 					var orderList = `
 						<form action="/orderInfo" method="post">
 						<div class="order-item">
@@ -188,25 +181,25 @@
 								<div>
 									<input type="hidden" name="orderNo" value="${order.orderNo}">
 									<div class="order-date">${new Date(order.orderDate).toLocaleDateString()}</div>
-									<div class="order-id">${order.orderId}</div>
+									<div class="order-id">주문번호: ${order.orderNo}</div>
 								</div>
 								<span class="order-status status-pending">결제완료</span>
 							</div>
 
-							<div class="order-content">								
+							<div class="order-content">
+							${order.orderProductDTO.map(product => `
 								<div class="order-product">
 									<input type="hidden" name="orderProductNo"
-										value="${order.orderProductNo}"> <img
-										src="/upload/${order.imageUrl}" alt="상품 이미지"
+										value="${product.orderProductNo}"> <img
+										src="/upload/${product.imageUrl}" alt="상품 이미지"
 										class="product-image">
 									<div class="product-details">
-										<div class="product-name"
-											text="${order.productName != null ? order.productName : '상품명 없음'}"></div>
-										<div class="product-price">${order.productPrice.toLocaleString()}원</div>
-										<div class="product-quantity">${order.productQuantity}개</div>
+										<div class="product-name">${product.productName}</div>
+										<div class="product-price">${product.productPrice.toLocaleString()}원</div>
+										<div class="product-quantity">수량: ${product.productQuantity}개</div>
 									</div>
 								</div>
-								
+							`).join('')}	
 							</div>
 							<div class="order-footer">
 								<div class="order-total">결제금액: ${order.orderPrice.toLocaleString()}원</div>
@@ -215,7 +208,6 @@
 									<a href="#" class="btn btn-outline">주문 상세</a>
 									<button class="btn btn-outline" type="submit"
 										onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
-
 								</div>
 							</div>
 						</div>
@@ -223,14 +215,85 @@
 					`;
 					orderContainer.innerHTML += orderList;
 				});
+				
 		        }else{
-		        	console.error('데이터 오류: content는 배열이 아니거나 존재하지 않습니다.');
+		        	orderContainer.innerHTML = '<h2>해당 상태의 주문이 없습니다.</h2>';	
 		        }
 			})
 			.catch(error => console.error('Error:',error));
 		}
-		
-	
+			
 	</script>
+
+	<script th:inline="javascript">
+    document.querySelectorAll('.filter-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const status = this.getAttribute('data-status');           
+
+            
+            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            
+            fetch(`/orderInfo/status?status=${status}`)
+            .then(response => response.json())
+            .then(data => {
+                updateOrderList(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    
+    function updateOrderList(data) {
+        const orderContainer = document.getElementById('order-list');
+        orderContainer.innerHTML = '';
+
+        if (data && Array.isArray(data) && data.length > 0) {
+        	
+        	data.forEach(order => {       	    
+        	        const orderItem = `
+        	            <form action="/orderInfo" method="post">
+        	                <div class="order-item">
+        	                    <div class="order-header">
+        	                        <div>
+        	                            <input type="hidden" name="orderNo" value="${order.orderNo}">
+        	                            <div class="order-date">${new Date(order.orderDate).toLocaleDateString()}</div>
+        	                            <div class="order-id">주문번호: ${order.orderNo}</div>
+        	                        </div>
+        	                        <span class="order-status status-pending">${order.status}</span>      	                       
+        	                    </div>
+        	                    <div class="order-content">
+        	                    ${order.orderProductDTO.map(product => `
+        	                        <div class="order-product">
+        	                            <input type="hidden" name="orderProductNo" value="${product.orderProductNo}">
+        	                            <img src="/upload/${product.imageUrl}" alt="상품 이미지" class="product-image">
+        	                            <div class="product-details">
+        	                                <div class="product-name">${product.productName || '상품명 없음'}</div>
+        	                                <div class="product-price">${product.productPrice.toLocaleString()}원</div>
+        	                                <div class="product-quantity">${product.productQuantity}개</div>
+        	                            </div>
+        	                        </div>
+        	                        `).join('')}
+        	                    </div>
+        	                    <div class="order-footer">
+        	                        <div class="order-total">결제금액: ${order.orderPrice.toLocaleString()}원</div>
+        	                        <div class="order-actions">
+        	                            <input type="hidden" name="orderNo" value="${order.orderNo}">
+        	                            <a href="#" class="btn btn-outline">주문 상세</a>
+        	                            <button class="btn btn-outline" type="submit" onclick="return confirm('주문을 취소하시겠습니까?')">주문 취소</button>
+        	                        </div>
+        	                    </div>
+        	                </div>
+        	            </form>
+        	        `;
+        	        orderContainer.innerHTML += orderItem;
+        	    });
+        } else {
+            orderContainer.innerHTML = '<h2>해당 상태의 주문이 없습니다.</h2>';
+        }
+    }
+</script>
+
 </body>
 </html>

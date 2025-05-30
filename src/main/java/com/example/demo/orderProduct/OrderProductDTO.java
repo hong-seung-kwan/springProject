@@ -26,5 +26,6 @@ public class OrderProductDTO {
 	LocalDateTime orderDate;
 	int orderId;
 	int orderPrice;
+	String status;
 	 	
 }

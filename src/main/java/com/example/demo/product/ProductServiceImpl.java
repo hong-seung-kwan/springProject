@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.order.Order;
 import com.example.demo.order.OrderRepository;
+import com.example.demo.orderProduct.OrderProduct;
 import com.example.demo.orderProduct.OrderProductRepository;
 import com.example.demo.util.FileUtil;
 
@@ -83,6 +85,16 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void remove(int productNo) {
 		
+		List<OrderProduct> orderProducts = orderProductRepository.deleteByProductProductNo(productNo);
+		
+		for (OrderProduct orderProduct : orderProducts) {
+	        Order order = orderProduct.getOrder();
+	        
+	        if (orderProductRepository.findByOrderOrderNo(order.getOrderNo()).isEmpty()) {
+	            orderRepository.deleteById(order.getOrderNo());
+	            
+	        }
+	    }
 		Optional<Product> optional = repository.findById(productNo);
 		if(optional.isPresent()) {			
 			repository.deleteById(productNo);
