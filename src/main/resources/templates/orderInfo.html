@@ -20,7 +20,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container px-4 px-lg-5">
-			<a class="navbar-brand" href="/home">Start Bootstrap</a>
+			<a class="navbar-brand" href="/home">Wardrobe</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -85,17 +85,16 @@
 		<!-- 기간 선택 -->
 		<div class="order-period">
 			<div class="period-custom">
-				<input type="date" id="startDate" class="period-input"> <span
-					class="period-separator">~</span> <input type="date" id="endDate"
-					class="period-input">
+				<input type="date" id="startDate" class="period-input"> 
+				<span class="period-separator">~</span> 
+				<input type="date" id="endDate"	class="period-input">
 				<button class="search-btn" onclick="orderInfoDate()">조회</button>
 			</div>
 		</div>
-
 		<!-- 주문 목록 -->
 		<div class="order-list" id="order-list">
 			<!-- 주문 아이템 1 -->
-			<form action="/orderInfo" method="post">
+			<!-- <form action="/orderInfo" method="post"> -->
 				<div class="order-item" th:each="order : ${orders}">
 					<div class="order-header">
 						<div>
@@ -106,19 +105,13 @@
 						</div>
 						<span class="order-status status-pending">[[${order.status}]]</span>
 					</div>
-
 					<div class="order-content">
-
-						<div class="order-product"
-							th:each="orderProduct : ${order.orderProductDTO}">
-							<input type="hidden" name="orderProductNo"
-								th:value="${orderProduct.orderProductNo}"> <img
-								th:src="@{'/upload/' +${orderProduct.imageUrl}}" alt="상품 이미지"
-								class="product-image">
+						<div class="order-product" th:each="orderProduct : ${order.orderProductDTO}">
+							<input type="hidden" name="orderProductNo" th:value="${orderProduct.orderProductNo}">  
+							<img th:src="@{'/upload/' +${orderProduct.imageUrl}}" alt="상품 이미지" class="product-image">
 							<div class="product-details">
 								<div class="product-name"
 									th:text="${orderProduct.productName != null ? orderProduct.productName : '상품명 없음'}"></div>
-
 								<div class="product-price"
 									th:text="${#numbers.formatInteger(orderProduct.productPrice,0,'COMMA')} + '원'">29,000원</div>
 								<div class="product-quantity"
@@ -128,18 +121,21 @@
 						</div>
 					</div>
 					<div class="order-footer">
+					  
 						<div class="order-total"
 							th:text="${'결제금액: ' + #numbers.formatInteger(order.orderPrice,0,'COMMA')} + '원'"></div>
+						
 						<div class="order-actions">
-							<input type="hidden" name="orderNo" th:value="${order.orderNo}">
-							<a href="#" class="btn btn-outline">주문 상세</a>
+							<form action="/orderInfo" method= "post">						
+							<input type="hidden" name="orderNo" th:value="${order.orderNo}">							
+							<a href="#" class="btn btn-outline">주문 상세</a>							
 							<button class="btn btn-outline" type="submit"
 								onclick="return confirm('주문을 취소하시겠습니까??')">주문 취소</button>
-
+							</form>							
 						</div>
 					</div>
 				</div>
-			</form>
+			<!-- </form> -->
 		</div>
 	</div>
 	<!-- 주문 내역이 없을 때 표시할 내용 (기본적으로 숨김) -->
@@ -257,7 +253,7 @@
         	                <div class="order-item">
         	                    <div class="order-header">
         	                        <div>
-        	                            <input type="hidden" name="orderNo" value="${order.orderNo}">
+        	                            
         	                            <div class="order-date">${new Date(order.orderDate).toLocaleDateString()}</div>
         	                            <div class="order-id">주문번호: ${order.orderNo}</div>
         	                        </div>

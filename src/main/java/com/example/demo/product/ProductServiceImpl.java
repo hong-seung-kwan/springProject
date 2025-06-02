@@ -90,11 +90,24 @@ public class ProductServiceImpl implements ProductService {
 		for (OrderProduct orderProduct : orderProducts) {
 	        Order order = orderProduct.getOrder();
 	        
+	        List<OrderProduct> orderProductList = orderProductRepository.findByOrderOrderNo(order.getOrderNo());
+	        int newTotalPrice = 0;
+
+	       
+	        for (OrderProduct op : orderProductList) {
+	            if (op.getProduct().getProductNo() != productNo) {
+	                newTotalPrice += op.getProductPrice() * op.getProductQuantity();
+	            }
+	        }
+
+	        order.setOrderPrice(newTotalPrice);
+
+	        
 	        if (orderProductRepository.findByOrderOrderNo(order.getOrderNo()).isEmpty()) {
 	            orderRepository.deleteById(order.getOrderNo());
-	            
-	        }
+	        }	        
 	    }
+		
 		Optional<Product> optional = repository.findById(productNo);
 		if(optional.isPresent()) {			
 			repository.deleteById(productNo);

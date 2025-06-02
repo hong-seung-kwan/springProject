@@ -159,13 +159,6 @@
 						<input type="hidden" name="delivery" th:value="${delivery}">
 						<span>총 결제 금액</span> <span th:text = "${#numbers.formatInteger(totalPrice + delivery,0,'COMMA')} + '원'"></span>
 					</div>
-
-					<!-- <div class="agreement">
-						<label> <input type="checkbox" id="agreement"
-							name="agreement" required> 주문 내용을 확인하였으며, <a href="#">구매
-								약관</a> 및 <a href="#">개인정보 처리방침</a>에 동의합니다.
-						</label>
-					</div> -->
 					<button type="submit" class="order-button">결제하기</button>					
 				</section>
 				</form>
