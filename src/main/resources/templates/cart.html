@@ -28,6 +28,7 @@
 						<div class="cart-item-details">
 							<h3 class="cart-item-name" th:text="${item.name}"></h3>
 							<p class="cart-item-id" th:text="${item.product}" hidden="hidden"></p>
+							<p class="cart-item-id" th:text="'사이즈:' + ${item.size}"></p>
 							<p class="cart-item-price"
 								th:text="${#numbers.formatInteger(item.price * item.productQuantity,0,'COMMA')} + 원"></p>
 						</div>

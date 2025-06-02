@@ -45,6 +45,7 @@ public class CartController {
 	@PostMapping("/cart/add")
 	public String addToCart(@RequestParam("productNo") int productNo,
 	                        @RequestParam("productQuantity") int productQuantity,
+	                        @RequestParam("size") String size,
 	                        Principal principal) {
 	    String userId = principal.getName();
 
@@ -52,6 +53,7 @@ public class CartController {
 	            .user(userId)
 	            .product(productNo)
 	            .productQuantity(productQuantity)
+	            .size(size)
 	            .build();
 
 	    service.register(cartDTO);

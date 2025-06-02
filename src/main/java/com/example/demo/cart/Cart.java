@@ -43,4 +43,6 @@ public class Cart {
 	@Column
 	int productQuantity;
 	
+	@Column
+	String size;
 }

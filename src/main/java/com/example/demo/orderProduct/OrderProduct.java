@@ -2,6 +2,7 @@ package com.example.demo.orderProduct;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.example.demo.cart.Cart;
 import com.example.demo.order.Order;
 import com.example.demo.product.Product;
 
@@ -50,4 +51,5 @@ public class OrderProduct {
 	
 	@Column
 	int productPrice;
+
 }

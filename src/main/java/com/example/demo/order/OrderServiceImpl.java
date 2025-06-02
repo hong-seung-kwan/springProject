@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.cart.Cart;
+import com.example.demo.cart.CartDTO;
 import com.example.demo.cart.CartRepository;
 import com.example.demo.orderProduct.OrderProduct;
 import com.example.demo.orderProduct.OrderProductDTO;
@@ -64,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
 
 			orderProduct.setOrder(order);
 			orderProduct.setProduct(product);
+			
 
 			orderProductRepository.save(orderProduct);
 		}

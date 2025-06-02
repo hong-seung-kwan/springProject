@@ -86,6 +86,7 @@ public class CartServiceImpl implements CartService {
 										.name(product.getName())
 										.price(product.getPrice())
 										.imageUrl(product.getImageUrl())
+										.size(cart.getSize())
 										.build();
 	
 			return dto;
@@ -101,6 +102,7 @@ public class CartServiceImpl implements CartService {
 								.user(id)
 								.product(product)
 								.productQuantity(dto.getProductQuantity())
+								.size(dto.getSize())
 								.build();
 			return cart;
 		}
